@@ -19,6 +19,7 @@ curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compo
 base=https://github.com/docker/machine/releases/download/v0.16.0
 curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine
 install /tmp/docker-machine /usr/local/bin/docker-machine
+chmod +x /usr/local/bin/docker-machine
 rm /tmp/docker-machine
 wget https://github.com/JonasProgrammer/docker-machine-driver-hetzner/releases/download/1.2.2/docker-machine-driver-hetzner_1.2.2_linux_amd64.tar.gz
 tar -xvf docker-machine-driver-hetzner_1.2.2_linux_amd64.tar.gz
