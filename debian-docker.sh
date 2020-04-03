@@ -18,8 +18,9 @@ add-apt-repository \
    stable"
 apt-get update
 apt-get install docker-ce docker-ce-cli containerd.io -y
-curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-base=https://github.com/docker/machine/releases/download/$DOCKER_MACHINE_VERSION
+curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod 755 /usr/local/bin/docker-compose
+base=https://github.com/docker/machine/releases/download/${DOCKER_MACHINE_VERSION}
 curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine
 install /tmp/docker-machine /usr/local/bin/docker-machine
 chmod +x /usr/local/bin/docker-machine
