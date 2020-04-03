@@ -18,6 +18,7 @@ add-apt-repository \
    stable"
 apt-get update
 apt-get install docker-ce docker-ce-cli containerd.io -y
+/etc/init.d/docker start
 curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod 755 /usr/local/bin/docker-compose
 base=https://github.com/docker/machine/releases/download/${DOCKER_MACHINE_VERSION}
