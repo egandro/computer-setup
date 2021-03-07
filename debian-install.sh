@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-DEBIAN_USER=harald
+DEBIAN_USER=$(ls /home)
 VBOX_VERSION=6.1.18
 
 ###################################################################
