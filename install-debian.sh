@@ -114,3 +114,13 @@ su - ${DEBIAN_USER} /bin/bash -c "echo 3 | update-alternatives --config editor"
 echo "if has('mouse')" >> /usr/share/vim/vim81/defaults.vim
 echo "   set mouse=r" >> /usr/share/vim/vim81/defaults.vim
 echo "endif" >> /usr/share/vim/vim81/defaults.vim
+
+
+###################################################################
+# sudo
+###################################################################
+
+apt install -y sudo
+
+usermod -aG sudo ${DEBIAN_USER}
+
