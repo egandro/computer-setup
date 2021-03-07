@@ -22,7 +22,7 @@ cd vbox
 chmod 755 VBoxLinuxAdditions.run
 ./VBoxLinuxAdditions.run
 cd ..
-rm -f VBoxLinuxAdditions.run
+rm -f VBoxLinuxAdditions.run vbox
 
 
 ###################################################################
