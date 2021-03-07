@@ -113,9 +113,10 @@ su - ${DEBIAN_USER} /bin/bash -c "echo 3 | update-alternatives --config editor"
 # fix mouse
 
 # (FUCK! debian!)
-echo "if has('mouse')" >> /usr/share/vim/vim81/defaults.vim
-echo "   set mouse=r" >> /usr/share/vim/vim81/defaults.vim
-echo "endif" >> /usr/share/vim/vim81/defaults.vim
+VIM_VERSION=$(apt list vim 2>&1 | grep vim  | sed -e 's/.*://g' | sed -e 's/\.//' | sed -e 's/\..*//')
+echo "if has('mouse')" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
+echo "   set mouse=r" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
+echo "endif" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 
 
 ###################################################################
