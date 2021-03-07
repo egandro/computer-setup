@@ -2,13 +2,14 @@
 set -x
 
 DEBIAN_USER=$(ls /home)
-VBOX_VERSION=6.1.18
 
 ###################################################################
 # vbox driver
 ###################################################################
 
 apt update
+apt install -y dmidecode
+VBOX_VERSION=$(dmidecode  | grep vboxVer | sed -e 's/.*vboxVer_//')
 apt install -y wget curl gpg build-essential dkms linux-headers-$(uname -r)
 
 apt install -y  p7zip-full
