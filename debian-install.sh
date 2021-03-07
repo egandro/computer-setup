@@ -95,10 +95,10 @@ apt install -y git subversion
 # Install ifconfig
 apt install -y net-tools
 
-# Install imc
+# Install mc
 apt install -y mc
 
-# Install imc
+# Install screen
 apt install -y screen
 
 
