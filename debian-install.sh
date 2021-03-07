@@ -117,6 +117,7 @@ VIM_VERSION=$(apt list vim 2>&1 | grep vim  | sed -e 's/.*://g' | sed -e 's/\.//
 echo "if has('mouse')" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 echo "   set mouse=r" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 echo "endif" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
+echo "set background=dark" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 
 
 ###################################################################
