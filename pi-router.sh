@@ -1,52 +1,52 @@
 #!/bin/bash
 set -x
 
-if [ -z "$CFG_HOSTNAME" ]
+if [ -z "${CFG_HOSTNAME}" ]
 then
   echo "setup the CFG_HOSTNAME"
   exit
 fi
 
-if [ -z "$CFG_USER" ]
+if [ -z "${CFG_USER}" ]
 then
   echo "setup the CFG_USER"
   exit
 fi
 
-if [ -z "$CFG_PASSWORD" ]
+if [ -z "${CFG_PASSWORD}" ]
 then
   echo "setup the CFG_PASSWORD"
   exit
 fi
 
-if [ -z "$CFG_WORLD_DEV" ]
+if [ -z "${CFG_WORLD_DEV}" ]
 then
   echo "setup the CFG_WORLD_DEV e.g. eth0"
   exit
 fi
 
-if [ -z "$CFG_IP_PREFIX" ]
+if [ -z "${CFG_IP_PREFIX}" ]
 then
   echo "setup the CFG_IP_PREFIX"
   echo "192.168.1.XXX < without the.XXX"
   exit
 fi
 
-if [ -z "$CFG_IP_ROUTER_POSTFIX" ]
+if [ -z "${CFG_IP_ROUTER_POSTFIX}" ]
 then
   echo "setup the CFG_IP_ROUTER_POSTFIX"
   echo "192.168.1.XXX < router XXX e.g. 1"
   exit
 fi
 
-if [ -z "$CFG_AP_SID" ]
+if [ -z "${CFG_AP_SID}" ]
 then
   echo "setup the CFG_AP_SID"
   echo "e.g. WLANrouter
   exit
 fi
 
-if [ -z "$CFG_AP_PASS" ]
+if [ -z "${CFG_AP_PASS}" ]
 then
   echo "setup the CFG_AP_PASS"
   echo "e.g. testtest"
