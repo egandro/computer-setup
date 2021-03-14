@@ -50,7 +50,7 @@ $ export CFG_IP_PREFIX=192.168.1
 $ export CFG_IP_ROUTER_POSTFIX=1
 $ export CFG_AP_SID=WLANrouter
 $ export CFG_AP_PASS=testtest
-$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/pi-router.sh && chmod 755 ./pi-router.sh && sudo ./pi-router.sh
+$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/pi-router.sh && chmod 755 ./pi-router.sh && sudo -E ./pi-router.sh
 $ reboot
 ```
 
