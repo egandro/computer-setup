@@ -95,7 +95,7 @@ EOF
 service smbd restart
 service nmbd restart
 
-echo -ne "$CFG_PASSWORD\n$CFG_PASSWORD\n" | smbpasswd -a -s $CFG_USER
+echo -ne "${CFG_PASSWORD}\n${CFG_PASSWORD}\n" | smbpasswd -a -s ${CFG_USER}
 
 
 #
@@ -144,7 +144,7 @@ chmod 600 /etc/hostapd/hostapd.conf
 
 cat <<EOF > /etc/default/hostapd
 RUN_DAEMON=yes
-DAEMON_CONF="/etc/hostapd/hostapd.conf"
+DAEMON_CONF=/etc/hostapd/hostapd.conf
 EOF
 
 systemctl unmask hostapd
