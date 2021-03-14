@@ -51,7 +51,6 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 apt update
 apt install yarn
 
-
 ###################################################################
 # visual studio code
 ###################################################################
@@ -141,7 +140,6 @@ echo "   set mouse=r" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 echo "endif" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 echo "set background=dark" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 
-
 ###################################################################
 # sudo
 ###################################################################
@@ -153,6 +151,5 @@ usermod -aG sudo ${DEBIAN_USER}  || echo ""
 ###################################################################
 # cleanup
 ###################################################################
-
 
 apt autoremove -y
