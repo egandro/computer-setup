@@ -156,7 +156,7 @@ EOF
 
 iptables -t nat -A POSTROUTING -o ${CFG_WORLD_DEV} -j MASQUERADE
 
-sh -c "iptables-save > /etc/iptables.ipv4.nat"
+iptables-save > /etc/iptables.ipv4.nat
 
 sed -i 's/exit 0//' /etc/rc.local
 
