@@ -42,7 +42,7 @@ fi
 if [ -z "${CFG_AP_SID}" ]
 then
   echo "setup the CFG_AP_SID"
-  echo "e.g. WLANrouter
+  echo "e.g. WLANrouter"
   exit
 fi
 
@@ -144,7 +144,7 @@ chmod 600 /etc/hostapd/hostapd.conf
 
 cat <<EOF > /etc/default/hostapd
 RUN_DAEMON=yes
-DAEMON_CONF=/etc/hostapd/hostapd.conf
+DAEMON_CONF="/etc/hostapd/hostapd.conf"
 EOF
 
 systemctl unmask hostapd
