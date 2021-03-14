@@ -54,7 +54,7 @@ then
 fi
 
 # create user
-echo -e "$CFG_PASSWORD\n$CFG_PASSWORD" adduser $CFG_USER 
+echo -e "$CFG_PASSWORD\n$CFG_PASSWORD" | adduser $CFG_USER 
 usermod -a -G sudo $CFG_USER
 usermod -a -G docker $CFG_USER || echo ""
 
