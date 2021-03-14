@@ -22,12 +22,12 @@ $ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-do
 
 ### raspberry router
 install raspbian
-put this files in the BOOT partition
+put this files in the BOOT partition (vnc and ssh are empty files - no extensions)
   - vnc
   - ssh
   - wpa_supplicant.conf
 
-wpa_supplicant.conf
+wpa_supplicant.conf:
 ```
 country=EU
 ctrl_interface=DIR=/var/run/wpa_supplicantGROUP=netdev
