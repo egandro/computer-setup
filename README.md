@@ -25,44 +25,17 @@ $ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-do
 
 Chocolaty setup
 ```powershell
+# elevated powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 ```
 
 basic system
 
 ```cmd
-choco install -y virtualbox-guest-additions-guest.install
-
-choco install -y chrome-remote-desktop-chrome
-
-choco install -y vscode
-
-choco install -y 7zip
-
-choco install -y git
-
-choco install -y svn
-
-choco install -y putty
-
-choco install -y cmake.install --installargs '"ADD_CMAKE_TO_PATH=System"'
-
-choco install -y nodejs
-
-rem npm install --global windows-build-tools
-
-choco install -y python3
-
-choco install -y visualstudio2019community
-
-rem choco install -y visualstudio2019enterprise
-
-choco install -y visualstudio2019-workload-nativedesktop
-
-choco install -y visualstudio2019-workload-manageddesktop
-
-choco install -y visualstudio2019-workload-netcoretools
-
+rem elevated cmd.exe
+curl -o windows-install.cmd https://raw.githubusercontent.com/egandro/computer-setup/master/windows-install.cmd 
+set VS2019_ENT_SERIAL=123123123123123
+windows-install.cmd
 ```
 
 
