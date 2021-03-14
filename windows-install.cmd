@@ -5,7 +5,8 @@ if "%VS2019_ENT_SERIAL%"=="" (
 
 choco install -y virtualbox-guest-additions-guest.install
 
-choco install -y googlechrome
+rem google changes this too often
+choco install -y googlechrome --ignore-checksums
 
 choco install -y vscode
 
