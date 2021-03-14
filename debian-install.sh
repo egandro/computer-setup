@@ -45,6 +45,12 @@ apt-get install -y nodejs
 # pi has installed node - remove old stuff
 apt autoremove -y
 
+# yarn
+curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+apt update
+apt install yarn
+
 
 ###################################################################
 # visual studio code
