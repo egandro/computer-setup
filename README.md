@@ -20,6 +20,36 @@ usage
 $ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-docker.sh && chmod 755 ./debian-docker.sh && sudo ./debian-docker.sh
 ```
 
+### raspberry router
+install raspbian
+put this files in the BOOT partition
+  - vnc
+  - ssh
+  - wpa_supplicant.conf
+
+wpa_supplicant.conf
+```
+country=EU
+ctrl_interface=DIR=/var/run/wpa_supplicantGROUP=netdev
+update_config=1
+network={
+    ssid="wifi_id"
+    psk="wifi_password"
+    key_mgmt=WPA-PSK
+    priority=1
+}
+```
+
+
+```bash
+$ export CFG_HOSTNAME=router
+$ export CFG_USER=hacker
+$ export CFG_PASSWORD=secret
+$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/pi-router.sh && chmod 755 ./pi-router.sh && sudo ./pi-router.sh
+$ reboot
+```
+
+
 
 ### windows 
 
