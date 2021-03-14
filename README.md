@@ -45,6 +45,11 @@ network={
 $ export CFG_HOSTNAME=router
 $ export CFG_USER=hacker
 $ export CFG_PASSWORD=secret
+$ export CFG_WORLD_DEV=eth0
+$ export CFG_IP_PREFIX=192.168.1
+$ export CFG_IP_ROUTER_POSTFIX=1
+$ export CFG_AP_SID=WLANrouter
+$ export CFG_AP_PASS=testtest
 $ wget https://raw.githubusercontent.com/egandro/computer-setup/master/pi-router.sh && chmod 755 ./pi-router.sh && sudo ./pi-router.sh
 $ reboot
 ```
