@@ -43,7 +43,7 @@ fi
 curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
 apt-get install -y nodejs
 # pi has installed node - remove old stuff
-apt autoremove
+apt autoremove -y
 
 
 ###################################################################
@@ -149,4 +149,4 @@ usermod -aG sudo ${DEBIAN_USER}  || echo ""
 ###################################################################
 
 
-apt autoremove
+apt autoremove -y
