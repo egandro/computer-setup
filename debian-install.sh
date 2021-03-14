@@ -4,9 +4,15 @@ set -x
 DEBIAN_USER=$(ls /home)
 IS_RASPBERRY=$(grep Pi /proc/device-tree/model 2>/dev/null && echo 1)
 
-apt update
-apt install -y wget curl gpg build-essential dkms linux-headers-$(uname -r)
+apt-get update
+apt-get -y dist-upgrade
+apt install -y wget curl gpg build-essential dkms
 apt install -y  p7zip-full
+
+if [ -z "$IS_RASPBERRY" ]
+then
+  apt install -y linux-headers-$(uname -r)
+fi
 
 ###################################################################
 # vbox driver
@@ -36,6 +42,8 @@ fi
 
 curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
 apt-get install -y nodejs
+# pi has installed node - remove old stuff
+apt autoremove
 
 
 ###################################################################
@@ -55,7 +63,7 @@ apt install code
 # Chrome
 ###################################################################
 
-if [ !  -z "$IS_RASPBERRY" ]
+if [ -z "$IS_RASPBERRY" ]
 then
   wget -t0 -c  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   apt install -y ./google-chrome-stable_current_amd64.deb
@@ -136,3 +144,9 @@ apt install -y sudo
 
 usermod -aG sudo ${DEBIAN_USER}  || echo ""
 
+###################################################################
+# cleanup
+###################################################################
+
+
+apt autoremove
