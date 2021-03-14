@@ -46,9 +46,9 @@ then
   exit
 fi
 
-if [ -z "$CFG_AP_passphrase" ]
+if [ -z "$CFG_AP_PASS" ]
 then
-  echo "setup the CFG_AP_passphrase"
+  echo "setup the CFG_AP_PASS"
   echo "e.g. testtest"
   exit
 fi
@@ -137,7 +137,7 @@ wpa=2
 wpa_key_mgmt=WPA-PSK
 rsn_pairwise=CCMP
 ssid=${CFG_AP_SID}
-wpa_passphrase=${CFG_AP_passphrase}
+wpa_passphrase=${CFG_AP_PASS}
 EOF
 
 chmod 600 /etc/hostapd/hostapd.conf
