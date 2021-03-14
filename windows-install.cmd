@@ -27,10 +27,11 @@ choco install -y python3
 
 choco install -y visualstudio2019enterprise
 
+"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\StorePID.exe" %VS2019_ENT_SERIAL% 09260
+
 choco install -y visualstudio2019-workload-nativedesktop
 
 choco install -y visualstudio2019-workload-manageddesktop
 
 choco install -y visualstudio2019-workload-netcorebuildtools
 
-"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\StorePID.exe" %VS2019_ENT_SERIAL% 09260
