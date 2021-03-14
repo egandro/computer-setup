@@ -5,7 +5,7 @@ if "%VS2019_ENT_SERIAL%"=="" (
 
 choco install -y virtualbox-guest-additions-guest.install
 
-choco install -y chrome-remote-desktop-chrome
+choco install -y googlechrome
 
 choco install -y vscode
 
