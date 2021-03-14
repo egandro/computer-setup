@@ -2,29 +2,33 @@
 set -x
 
 DEBIAN_USER=$(ls /home)
+IS_RASPBERRY=$(grep Pi /proc/device-tree/model 2>/dev/null && echo 1)
+
+apt update
+apt install -y wget curl gpg build-essential dkms linux-headers-$(uname -r)
+apt install -y  p7zip-full
 
 ###################################################################
 # vbox driver
 ###################################################################
 
-apt update
-apt install -y dmidecode
+apt install -y dmidecode || echo ""
 VBOX_VERSION=$(dmidecode  | grep vboxVer | sed -e 's/.*vboxVer_//')
-apt install -y wget curl gpg build-essential dkms linux-headers-$(uname -r)
 
-apt install -y  p7zip-full
+if [ !  -z "$VBOX_VERSION" ]
+then
+  wget -c -t0 https://download.virtualbox.org/virtualbox/${VBOX_VERSION}/VBoxGuestAdditions_${VBOX_VERSION}.iso
 
-wget -c -t0 https://download.virtualbox.org/virtualbox/${VBOX_VERSION}/VBoxGuestAdditions_${VBOX_VERSION}.iso
+  rm -rf vbox
+  mkdir -p vbox
+  cd vbox
+  7z x ../VBoxGuestAdditions_${VBOX_VERSION}.iso
+  chmod 755 VBoxLinuxAdditions.run
+  ./VBoxLinuxAdditions.run
 
-rm -rf vbox
-mkdir -p vbox
-cd vbox
-7z x ../VBoxGuestAdditions_${VBOX_VERSION}.iso
-chmod 755 VBoxLinuxAdditions.run
-./VBoxLinuxAdditions.run
-cd ..
-rm -rf VBoxGuestAdditions_${VBOX_VERSION}.iso vbox
-
+  cd ..
+  rm -rf VBoxGuestAdditions_${VBOX_VERSION}.iso vbox
+fi
 
 ###################################################################
 # nodejs
@@ -51,11 +55,13 @@ apt install code
 # Chrome
 ###################################################################
 
-wget -t0 -c  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-apt install -y ./google-chrome-stable_current_amd64.deb
-apt --fix-broken install -y
-rm -f ./google-chrome-stable_current_amd64.deb
-
+if [ !  -z "$IS_RASPBERRY" ]
+then
+  wget -t0 -c  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  apt install -y ./google-chrome-stable_current_amd64.deb
+  apt --fix-broken install -y
+  rm -f ./google-chrome-stable_current_amd64.deb
+fi
 
 ###################################################################
 # Docker
@@ -101,7 +107,6 @@ apt install -y mc
 # Install screen
 apt install -y screen
 
-
 ###################################################################
 # Vim
 ###################################################################
@@ -129,5 +134,5 @@ echo "set background=dark" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 
 apt install -y sudo
 
-usermod -aG sudo ${DEBIAN_USER}
+usermod -aG sudo ${DEBIAN_USER}  || echo ""
 
