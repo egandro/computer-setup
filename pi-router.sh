@@ -114,6 +114,8 @@ EOF
 mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 
 cat <<EOF >> /etc/dnsmasq.conf
+local=/localnet/
+domain=localnet
 interface=wlan0
 no-dhcp-interface=${CFG_WORLD_DEV}
 dhcp-range=${CFG_IP_PREFIX}.150,${CFG_IP_PREFIX}.200,255.255.255.0,24h
