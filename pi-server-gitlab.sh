@@ -25,3 +25,5 @@ klud/gitlab-runner
 
 echo "wait until git is available and register the runner via:"
 echo "   docker exec -it arm-gitlab-runner gitlab-runner register"
+
+echo "add >    pull_policy = "if-not-present"< to end of /var/opt/gitlab/gitlab-runner/config.toml"
