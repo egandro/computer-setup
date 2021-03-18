@@ -24,6 +24,12 @@ docker run -d --restart always \
 klud/gitlab-runner
 
 echo "wait until git is available and register the runner via:"
-echo "   docker exec -it arm-gitlab-runner gitlab-runner register"
+echo "   docker exec -it arm-gitlab-runner gitlab-runner register -n \
+  --url http://gitlab.localnet:8888/ \
+  --registration-token REGISTRATION_TOKEN \
+  --executor docker \
+  --description 'Arm Gitlab Runner' \
+  --docker-image 'debian:buster' \
+  --docker-volumes /var/run/docker.sock:/var/run/docker.sock"
 
 echo "add >    pull_policy = "if-not-present"< to end of /var/opt/gitlab/gitlab-runner/config.toml"
