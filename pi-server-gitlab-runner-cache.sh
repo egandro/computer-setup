@@ -18,7 +18,7 @@ docker run -d --restart always \
   -e "MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}" \
   -e "MINIO_SECRET_KEY=${MINIO_SECRET_KEY}" \
   -v ${GITLAB_HOME}/gitlab-runner-cache:/var/lib/minio \
-  -p 172.17.0.1:9010:9000 \
+  -p 9010:9000 \
   webhippie/minio
 #jessestuart/minio  # this is an arm64 version
 
@@ -30,7 +30,7 @@ echo "add this to your/var/opt/gitlab/gitlab-runner/config.toml"
 echo "  [runners.cache]"
 echo "    Type = \"s3\""
 echo "    [runners.cache.s3]"
-echo "      ServerAddress = \"172.17.0.1:9010\""
+echo "      ServerAddress = \"giltab.localnet:9010\""
 echo "      AccessKey = \"${MINIO_ACCESS_KEY}\""
 echo "      SecretKey = \"${MINIO_SECRET_KEY}\""
 echo "      BucketName = \"data\""
