@@ -2,7 +2,8 @@ ARG BASE_IMAGE
 
 FROM ${BASE_IMAGE}
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     cmake \
     && apt-get clean autoclean \
     && apt-get autoremove --yes \
