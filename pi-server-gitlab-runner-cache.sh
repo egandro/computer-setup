@@ -9,6 +9,7 @@ GITLAB_HOME=/var/opt/gitlab
 
 mkdir -p ${GITLAB_HOME}
 mkdir -p ${GITLAB_HOME}/gitlab-runner-cache/data
+chmod 700 ${GITLAB_HOME}/gitlab-runner-cache
 
 MINIO_ACCESS_KEY="$(< /dev/urandom tr -dc A-Z0-9 | head -c20)"
 MINIO_SECRET_KEY="$(< /dev/urandom tr -dc _A-Za-z0-9+- | head -c40)"
