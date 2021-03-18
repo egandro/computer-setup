@@ -7,21 +7,21 @@ BUILDERPACK_URL=https://raw.githubusercontent.com/docker-library/buildpack-deps/
 all: clean
 	wget -c -t0 ${BUILDERPACK_URL}/buster/Dockerfile
 	sed -i 's/FROM.*//' Dockerfile 
-	sed -i 's/gcc/gcc gpg/' Dockerfile 
-	sed -i 's/gcc/gcc gpg-agent/' Dockerfile 
-	sed -i 's/gcc/gcc dirmngr/' Dockerfile 
-	sed -i 's/gcc/gcc cmake/' Dockerfile 
-	mv Dockerfile header
+	mv Dockerfile buildpack
+	cp ../builder-buildpack/Dockerfile builder
+	sed -i 's/FROM.*//' builder
+	sed -i 's/ARG.*//' builder
 	wget -c -t0 ${NODE_URL}/${NODE_VERSION}/buster/Dockerfile
 	wget -c -t0 ${NODE_URL}/${NODE_VERSION}/buster/docker-entrypoint.sh
 	chmod 755 docker-entrypoint.sh
 	sed -i 's/FROM.*//' Dockerfile 
-	mv Dockerfile footer
+	mv Dockerfile node
 	echo "FROM ${BASE_IMAGE}" > Dockerfile
-	cat header >> Dockerfile
-	cat footer >> Dockerfile
+	cat buildpack >> Dockerfile
+	cat builder >> Dockerfile
+	cat node >> Dockerfile
 	docker build -t ${TARGET} .
 	make clean
 
 clean:
-	rm -f Dockerfile docker-entrypoint.sh header footer
+	rm -f Dockerfile docker-entrypoint.sh buildpack builder node
