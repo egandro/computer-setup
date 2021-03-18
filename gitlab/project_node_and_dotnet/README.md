@@ -1,2 +1,0 @@
-# Builder node dotnet image
-
