@@ -1,5 +1,13 @@
 TARGET=builder-node
-BASE_IMAGE=node:15-buster
+BASE_IMAGE=builder-buildpack
+NODE_VERSION=15
+URL=https://raw.githubusercontent.com/nodejs/docker-node/main
 
-all:
-	docker build --build-arg BASE_IMAGE="${BASE_IMAGE}" -t ${TARGET} .
+all: clean
+	wget -c -t0 ${URL}/${NODE_VERSION}/buster/Dockerfile
+	wget -c -t0 ${URL}/${NODE_VERSION}/buster/docker-entrypoint.sh
+	sed -i 's/buildpack-deps:buster/'${BASE_IMAGE}'/1' Dockerfile 
+	docker build -t ${TARGET} .
+
+clean:
+	rm -f Dockerfile docker-entrypoint.sh
