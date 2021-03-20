@@ -69,6 +69,7 @@ sed -i 's/exit 0//' /etc/rc.local
 
 cat <<EOF >> /etc/rc.local
 hdparm -S 60 /dev/sda || echo ""
+hdparm -S 60 /dev/sdb || echo ""
 exit 0
 EOF
 
