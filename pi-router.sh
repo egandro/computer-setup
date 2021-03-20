@@ -63,6 +63,15 @@ echo "${CFG_HOSTNAME}" > /etc/hostname
 sed -i 's/raspberrypi/'${CFG_HOSTNAME}/'' /etc/hosts
 hostname ${CFG_HOSTNAME}
 
+# hdparm (for silence external disk)
+apt-get install -y hdparm
+sed -i 's/exit 0//' /etc/rc.local
+
+cat <<EOF >> /etc/rc.local
+hdparm -S 60 /dev/sda || echo ""
+exit 0
+EOF
+
 #samba
 DEBIAN_FRONTEND=noninteractive apt-get install -y samba samba-common smbclient
 
