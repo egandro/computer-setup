@@ -89,7 +89,7 @@ path = /home/shares/users
 read only = no
 # create mask = 0644
 # directory mask = 0755
-# force user = shareuser
+force user = pi
 EOF
 
 service smbd restart
