@@ -12,3 +12,5 @@ ssh-copy-id -i ~/.ssh/id_rsa ${USER}@localhost
 
 # distribute key
 echo ssh-copy-id -i ~/.ssh/id_rsa ${USER}@host
+echo scp -p ~/.ssh/id_rsa ${USER}@host:/home/${USER}/.ssh
+echo scp -p ~/.ssh/id_rsa.pub ${USER}@host:/home/${USER}/.ssh
