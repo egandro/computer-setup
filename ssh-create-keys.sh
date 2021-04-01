@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PASS=""
-ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ${PASS}
+ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N "${PASS}"
 
 # for windows/putty
 sudo apt-get install putty-tools || echo ""
