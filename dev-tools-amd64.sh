@@ -13,10 +13,10 @@ rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.2.linux-amd64.tar.gz
 rm -f go1.16.2.linux-amd64.tar.gz
 
 rm -f /etc/profile.d/go-env.sh
-echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/profile.d/go-env.sh
-echo "export GOPATH=$HOME/.golib" >> /etc/profile.d/go-env.sh
-echo "export PATH=$PATH:$GOPATH/bin" >> /etc/profile.d/go-env.sh
-echo "export GOPATH=$GOPATH:$HOME/projects/go" >> /etc/profile.d/go-env.sh
+echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile.d/go-env.sh
+echo "export GOPATH=\$HOME/.golib" >> /etc/profile.d/go-env.sh
+echo "export PATH=\$PATH:\$GOPATH/bin" >> /etc/profile.d/go-env.sh
+echo "export GOPATH=\$GOPATH:\$HOME/projects/go" >> /etc/profile.d/go-env.sh
 
 #
 # kubernetes
@@ -48,4 +48,4 @@ rm -f dotnet-sdk-5.0.201-linux-x64.tar.gz
 
 rm -f /etc/profile.d/dotnet-env.sh
 echo "export DOTNET_ROOT=/usr/local/dotnet" >> /etc/profile.d/dotnet-env.sh
-echo "export PATH=$PATH:$DOTNET_ROOT" >> /etc/profile.d/dotnet-env.sh
+echo "export PATH=\$PATH:\$DOTNET_ROOT" >> /etc/profile.d/dotnet-env.sh
