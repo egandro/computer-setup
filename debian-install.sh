@@ -7,7 +7,7 @@ IS_RASPBERRY=$(grep Pi /proc/device-tree/model 2>/dev/null && echo 1)
 apt-get update
 apt-get -y dist-upgrade
 apt install -y wget curl gpg build-essential dkms
-apt install -y  p7zip-full
+apt install -y p7zip-full
 
 if [ -z "$IS_RASPBERRY" ]
 then
