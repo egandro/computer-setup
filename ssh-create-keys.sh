@@ -1,9 +1,11 @@
 #!/bin/bash
 
+PASS=""
+ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ${PASS}
+
+# for windows/putty
 sudo apt-get install putty-tools || echo ""
-ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
-# ssh-keygen -p
-# ssh-keygen -p -P oldpassphrase -N "" -f ~/.ssh/id_rsa
 puttygen ~/.ssh/id_rsa -o ~/.ssh/id_rsa.ppk
 
+# distribute key
 echo ssh-copy-id -i ~/.ssh/id_rsa ${USER}@host
