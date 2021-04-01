@@ -24,6 +24,8 @@ choco install -y nodejs
 
 rem npm install --global windows-build-tools
 
+choco install -y docker-machine
+
 choco install -y python3
 
 choco install -y visualstudio2019enterprise
