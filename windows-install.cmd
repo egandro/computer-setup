@@ -18,6 +18,8 @@ choco install -y svn
 
 choco install -y putty
 
+choco install -y winscp
+
 choco install -y cmake.install --installargs '"ADD_CMAKE_TO_PATH=System"'
 
 choco install -y nodejs
