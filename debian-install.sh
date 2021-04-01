@@ -132,6 +132,9 @@ apt install -y mc
 # Install screen
 apt install -y screen
 
+# Install htop
+apt install -y htop
+
 ###################################################################
 # Vim
 ###################################################################
