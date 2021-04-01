@@ -163,6 +163,33 @@ apt install -y sudo
 
 usermod -aG sudo ${DEBIAN_USER}  || echo ""
 
+
+###################################################################
+# locales
+###################################################################
+locals=(
+"en_DK ISO-8859-1"
+"en_DK.ISO-8859-15 ISO-8859-15"
+"en_DK.UTF-8 UTF-8"
+"de_DE.UTF-8 UTF-8"
+"de_DE ISO-8859-1"
+"de_DE@euro ISO-8859-15"
+"en_US.UTF-8 UTF-8"
+"da_DK ISO-8859-1"
+"da_DK.UTF-8 UTF-8"
+)
+
+for l in "${locals[@]}"
+do :
+        #echo $l
+        l=$(echo $l | sed -e 's/\./\\./g')
+        #echo $l
+        #echo "s/# ${l}/${l}/g"
+        sed -i "s/# ${l}/${l}/g" /etc/locale.gen
+done
+
+locale-gen
+
 ###################################################################
 # cleanup
 ###################################################################
