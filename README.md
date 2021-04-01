@@ -72,4 +72,11 @@ set VS2019_ENT_SERIAL=123123123123123
 windows-install.cmd
 ```
 
+docker-machine
+
+  - Docker2Toolbox <https://github.com/kaosagnt/toolbox2docker/releases>
+
+```cmd
+docker-machine create --virtualbox-disk-size "100000" --virtualbox-memory "8192" --virtualbox-cpu-count "4" default
+```
 
