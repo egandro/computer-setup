@@ -98,9 +98,20 @@ apt-get install -y docker-ce docker-ce-cli containerd.io
 
 usermod -a -G docker ${DEBIAN_USER}
 
-curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+if [ -z "$IS_RASPBERRY" ]
+then
+  curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  chmod +x /usr/local/bin/docker-compose
+#else
+#this takes for ever to install on pi.
 #pip3 install docker-compose
+fi
+
+if [ -z "$IS_RASPBERRY" ]
+then
+   curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/v0.10.0/kind-$(uname)-amd64"
+   chmod +x /usr/local/bin/kind
+fi
 
 ###################################################################
 # Tools
