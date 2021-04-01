@@ -165,3 +165,6 @@ usermod -aG sudo ${DEBIAN_USER}  || echo ""
 ###################################################################
 
 apt autoremove -y
+
+
+echo "On debian you need to reboot for the VBox Tools to be present."
