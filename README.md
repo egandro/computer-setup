@@ -8,7 +8,7 @@
 usage
 
 ```bash
-$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-install.sh && chmod 755 sudo ./debian-install.sh && ./debian-install.sh
+$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-install.sh && chmod 755 ./debian-install.sh && sudo ./debian-install.sh
 ```
 
 
