@@ -14,3 +14,6 @@ ssh-copy-id -i ~/.ssh/id_rsa ${USER}@localhost
 echo ssh-copy-id -i ~/.ssh/id_rsa ${USER}@host
 echo scp -p ~/.ssh/id_rsa ${USER}@host:/home/${USER}/.ssh
 echo scp -p ~/.ssh/id_rsa.pub ${USER}@host:/home/${USER}/.ssh
+
+# show keys ~/.ssh/authorized_keys
+# egrep '^[^#]' ~/.ssh/authorized_keys | xargs -n1 -I% bash -c 'ssh-keygen -l -f /dev/stdin <<<"%"'
