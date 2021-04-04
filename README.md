@@ -1,26 +1,33 @@
 # computer-setup
 
 
-## debian
+## Debian
 
 
-### system 
+### System 
 usage
 
 ```bash
 $ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-install.sh && chmod 755 ./debian-install.sh && sudo ./debian-install.sh
 ```
 
+### Dev-86 Tools 
+usage
+
+```bash
+$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/dev-tools-amd64.sh && chmod 755 ./dev-tools-amd64.sh && sudo ./dev-tools-amd64.sh
+```
 
 
-### docker only(old)
+
+### Docker only(old)
 usage
 
 ```bash
 $ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-docker.sh && chmod 755 ./debian-docker.sh && sudo ./debian-docker.sh
 ```
 
-### raspberry router
+### Raspberry Router
 install raspbian
 put this files in the BOOT partition (ssh is an empty file - no extensions)
   - ssh
@@ -55,7 +62,7 @@ $ reboot
 
 
 
-### windows 
+### Windows 
 
 Chocolaty setup
 ```powershell
@@ -80,3 +87,8 @@ docker-machine
 docker-machine create --virtualbox-disk-size "100000" --virtualbox-memory "8192" --virtualbox-cpu-count "4" default
 ```
 
+### Android Termux
+
+```bash
+curl -o android-termux.sh https://raw.githubusercontent.com/egandro/computer-setup/master/android-termux.sh && chmod 755 android-termux.sh && ./android-termux.sh
+```
