@@ -198,3 +198,7 @@ apt autoremove -y
 
 
 echo "On debian you need to reboot for the VBox Tools to be present."
+
+echo "Setup Git:"
+echo git config --global user.name "Your Name"
+echo git config --global user.email "youremail@yourdomain.com"
