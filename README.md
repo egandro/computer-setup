@@ -15,7 +15,7 @@ $ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-in
 usage
 
 ```bash
-$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/dev-tools-amd64.sh && chmod 755 ./dev-tools-amd64.sh && sudo ./dev-tools-amd64.sh
+$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-dev-tools-amd64.sh && chmod 755 ./debian-dev-tools-amd64.sh && sudo ./debian-dev-tools-amd64.sh
 ```
 
 
