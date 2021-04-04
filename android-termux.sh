@@ -11,7 +11,6 @@ pkg install -y nodejs
 pkg install -y git
 pkg install -y wget
 pkg install -y ffmpeg
-curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /data/data/com.termux/f
-iles/usr/bin/youtube-dl
+curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /data/data/com.termux/files/usr/bin/youtube-dl
 chmod a+rx /data/data/com.termux/files/usr/bin/youtube-dl
 apt autoremove -y
