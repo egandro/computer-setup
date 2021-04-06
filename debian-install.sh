@@ -135,6 +135,9 @@ apt install -y screen
 # Install htop
 apt install -y htop
 
+# Install zip
+apt install -y zip unzip
+
 ###################################################################
 # Vim
 ###################################################################
