@@ -124,9 +124,9 @@ EOF
 mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
 
 cat <<EOF >> /etc/dnsmasq.conf
-local=/localnet/
-domain=localnet
-#address=/.localnet/${CFG_IP_PREFIX}.100
+local=/my.localnet/
+domain=my.localnet
+#address=/.my.localnet/${CFG_IP_PREFIX}.100
 interface=wlan0
 no-dhcp-interface=${CFG_WORLD_DEV}
 #interface=docker0
