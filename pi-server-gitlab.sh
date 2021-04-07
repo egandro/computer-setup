@@ -8,8 +8,8 @@ mkdir -p ${GITLAB_HOME}
 
 docker run -d --restart always \
 --name gitlab \
---hostname gitlab.localnet \
---env GITLAB_OMNIBUS_CONFIG="external_url 'http://gitlab.localnet:8888'; gitlab_rails['gitlab_shell_ssh_port'] = 2222;  nginx['listen_port'] = 
+--hostname gitlab.my.localnet \
+--env GITLAB_OMNIBUS_CONFIG="external_url 'http://gitlab.my.localnet:8888'; gitlab_rails['gitlab_shell_ssh_port'] = 2222;  nginx['listen_port'] = 
 8888;  nginx['listen_https'] = false; ; " \
 -p 8888:8888 -p 2222:22 \
 -v ${GITLAB_HOME}/gitlab/config:/etc/gitlab \
@@ -25,7 +25,7 @@ klud/gitlab-runner
 
 echo "wait until git is available and register the runner via:"
 echo "   docker exec -it arm-gitlab-runner gitlab-runner register -n \
-  --url http://gitlab.localnet:8888/ \
+  --url http://gitlab.my.localnet:8888/ \
   --registration-token REGISTRATION_TOKEN \
   --executor docker \
   --description 'Arm Gitlab Runner' \
