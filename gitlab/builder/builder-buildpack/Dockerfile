@@ -2,6 +2,8 @@ ARG BASE_IMAGE
 
 FROM ${BASE_IMAGE}
 
+COPY ca-certificates /usr/local/share/ca-certificates
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     cmake \
@@ -23,7 +25,8 @@ RUN apt-get update && \
     && apt-get install -y docker-ce-cli --no-install-recommends \
     && apt-get clean autoclean \
     && apt-get autoremove --yes \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && update-ca-certificates
 
 # on pi this is slow as hell
 #    && pip3 install docker-compose \

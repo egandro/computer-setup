@@ -4,3 +4,4 @@ docker-entrypoint.sh
 buildpack
 builder
 node
+ca-certificates

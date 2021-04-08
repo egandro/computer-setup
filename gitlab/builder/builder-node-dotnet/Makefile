@@ -5,6 +5,8 @@ NODE_URL=https://raw.githubusercontent.com/nodejs/docker-node/main
 BUILDERPACK_URL=https://raw.githubusercontent.com/docker-library/buildpack-deps/master/debian
 
 all: clean
+	mkdir -p ca-certificates
+	cp -r /usr/local/share/ca-certificates ca-certificates
 	wget -c -t0 ${BUILDERPACK_URL}/buster/Dockerfile
 	sed -i 's/FROM.*//' Dockerfile 
 	mv Dockerfile buildpack
@@ -22,6 +24,8 @@ all: clean
 	cat node >> Dockerfile
 	docker build -t ${TARGET} .
 	make clean
+	rm -rf ca-certificates
 
 clean:
 	rm -f Dockerfile docker-entrypoint.sh buildpack builder node
+	rm -rf ca-certificates
