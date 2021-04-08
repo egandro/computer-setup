@@ -1,5 +1,5 @@
 default:
-  image: node:15-buster
+  image: builder-node
 
 cache:
   #key: ${CI_COMMIT_REF_SLUG}
