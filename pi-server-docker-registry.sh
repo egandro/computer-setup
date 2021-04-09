@@ -43,6 +43,7 @@ docker run -d \
   -v ${GITLAB_HOME}/registry/auth:/auth \
   -e "REGISTRY_AUTH=htpasswd" \
   -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e REGISTRY_STORAGE_DELETE_ENABLED=true \
   -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
   -v ${GITLAB_HOME}/registry/certs:/certs \
   -e REGISTRY_HTTP_ADDR=0.0.0.0:5000 \
