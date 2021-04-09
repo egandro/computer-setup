@@ -49,3 +49,8 @@ rm -f dotnet-sdk-5.0.201-linux-x64.tar.gz
 rm -f /etc/profile.d/dotnet-env.sh
 echo "export DOTNET_ROOT=/usr/local/dotnet" >> /etc/profile.d/dotnet-env.sh
 echo "export PATH=\$PATH:\$DOTNET_ROOT" >> /etc/profile.d/dotnet-env.sh
+
+#
+# cli docker registry tools
+#
+go get github.com/mayflower/docker-ls/cli/...
