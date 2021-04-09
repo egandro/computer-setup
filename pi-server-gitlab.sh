@@ -2,6 +2,7 @@
 
 # https://ralph.blog.imixs.com/2019/06/09/running-gitlab-on-docker/
 # for 64bit move to this: https://hub.docker.com/r/ravermeister/gitlab
+# 64bit ARM gitlab runner - https://hub.docker.com/r/gitlab/gitlab-runner/
 
 GITLAB_HOME=/var/opt/gitlab
 
