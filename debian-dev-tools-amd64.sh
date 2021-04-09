@@ -8,6 +8,7 @@ apt-get install -y default-jre default-jdk
 #
 # golang
 #
+# most recent go version: wget "https://dl.google.com/go/$(curl https://golang.org/VERSION?m=text).linux-amd64.tar.gz"
 wget -q -c -t0 https://golang.org/dl/go1.16.2.linux-amd64.tar.gz
 rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.2.linux-amd64.tar.gz
 rm -f go1.16.2.linux-amd64.tar.gz
@@ -31,6 +32,16 @@ sudo apt-get install -y kubectl
 #
 # Lens
 #
+
+#https://gist.github.com/lukechilds/a83e1d7127b78fef38c2914c4ececc3c
+get_latest_release() {
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' |                                            # Get tag line
+    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+}
+# get_latest_release lensapp/lens
+# only Lens-4.2.1.amd64.deb
+
 wget -q -c -t0 https://github.com/lensapp/lens/releases/download/v4.1.5/Lens-4.1.5.amd64.deb
 dpkg -i Lens-4.1.5.amd64.deb
 dpkg --configure -a
