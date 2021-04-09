@@ -1,0 +1,4 @@
+registry: https://registry.my.localnet:5000
+basic-auth: true
+user: gitlab
+password: changeme
