@@ -42,6 +42,8 @@ rm -f Lens-4.1.5.amd64.deb
 #
 # from here: https://github.com/dotnet/core/blob/main/release-notes/5.0/releases.json
 # https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json
+# URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-arm64\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
+# arm, arm64, x64
 wget -q -c -t0  https://download.visualstudio.microsoft.com/download/pr/73a9cb2a-1acd-4d20-b864-d12797ca3d40/075dbe1dc3bba4aa85ca420167b861b6/dotnet-sdk-5.0.201-linux-x64.tar.gz
 rm -rf /usr/local/dotnet && mkdir -p /usr/local/dotnet && tar -C /usr/local/dotnet -xzf dotnet-sdk-5.0.201-linux-x64.tar.gz
 rm -f dotnet-sdk-5.0.201-linux-x64.tar.gz
