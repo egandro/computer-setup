@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # https://ralph.blog.imixs.com/2019/06/09/running-gitlab-on-docker/
+# for 64bit move to this: https://hub.docker.com/r/ravermeister/gitlab
 
 GITLAB_HOME=/var/opt/gitlab
 
