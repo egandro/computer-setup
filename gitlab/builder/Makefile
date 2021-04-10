@@ -13,11 +13,12 @@ builder-node:
 builder-node-dotnet:
 	cd $@ && make
 
+.PHONY: builder-node-java
+builder-node-java:
+	cd $@ && make
+
 .PHONY: builder-node-go
 builder-node-go:
 	cd $@ && make
 
-.PHONY: builder-node-java
-builder-node-java:
-	cd $@ && make
 
