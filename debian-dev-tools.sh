@@ -50,6 +50,11 @@ sudo apt-get install -y kubectl
 curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/v0.10.0/kind-$(uname)-$(ARCH)"
 chmod +x /usr/local/bin/kind
 
+# https://github.com/kubernetes-sigs/kind/issues/166
+case "${ARCH}" in
+	arm64) docker pull rossgeorgiev/kind-node-arm64;;
+esac
+
 #
 # Lens
 #
