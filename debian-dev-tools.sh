@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -x
+
+IS_RASPBERRY=$(grep Pi /proc/device-tree/model 2>/dev/null && echo 1)
 ARCH=$(dpkg --print-architecture)
 
 #
@@ -16,7 +19,7 @@ GO_LATEST=$(curl -s https://golang.org/VERSION?m=text)
 GO_INSTALLER=${GO_LATEST}.linux-${ARCH}.tar.gz
 wget -c -t0 "https://dl.google.com/go/${GO_INSTALLER}"
 rm -rf /usr/local/go && tar -C /usr/local -xzf ${GO_INSTALLER}
-###rm -f ${GO_INSTALLER}
+rm -f ${GO_INSTALLER}
 rm -f /etc/profile.d/go-env.sh
 echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile.d/go-env.sh
 echo "export GOPATH=\$HOME/.golib" >> /etc/profile.d/go-env.sh
@@ -43,16 +46,18 @@ get_latest_release() {
     grep '"tag_name":' |                                            # Get tag line
     sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
 }
-# get_latest_release lensapp/lens
 
-LENS_LATEST=$(get_latest_release lensapp/lens)
-LENS_LATEST=$(echo $LENS_LATEST | sed -e 's/v//')
-
-wget -c -t0 https://github.com/lensapp/lens/releases/download/v$LENS_LATEST{}/Lens-${LENS_LATEST}.${ARCH}.deb
-dpkg -i Lens-${LENS_LATEST}.${ARCH}.deb
-dpkg --configure -a
-apt --fix-broken install -y
-###rm -f Lens-${LENS_LATEST}.${ARCH}.deb
+if [ -z "$IS_RASPBERRY" ]
+then
+   # get_latest_release lensapp/lens
+   LENS_LATEST=$(get_latest_release lensapp/lens)
+   LENS_LATEST=$(echo $LENS_LATEST | sed -e 's/v//')
+   wget -c -t0 https://github.com/lensapp/lens/releases/download/v${LENS_LATEST}/Lens-${LENS_LATEST}.${ARCH}.deb
+   dpkg -i Lens-${LENS_LATEST}.${ARCH}.deb
+   dpkg --configure -a
+   apt --fix-broken install -y
+   rm -f Lens-${LENS_LATEST}.${ARCH}.deb
+fi
 
 #
 # DotNet Core
@@ -65,7 +70,7 @@ apt --fix-broken install -y
 URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-${ARCH}\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
 wget -c -t0 ${URL}
 rm -rf /usr/local/dotnet && mkdir -p /usr/local/dotnet && tar -C /usr/local/dotnet -xzf dotnet-sdk-linux-$(ARCH).tar.gz
-###rm -f dotnet-sdk-linux-$(ARCH).tar.gz
+rm -f dotnet-sdk-linux-$(ARCH).tar.gz
 
 
 rm -f /etc/profile.d/dotnet-env.sh
@@ -75,4 +80,5 @@ echo "export PATH=\$PATH:\$DOTNET_ROOT" >> /etc/profile.d/dotnet-env.sh
 #
 # cli docker registry tools
 #
+. /etc/profile.d/go-env.sh
 go get github.com/mayflower/docker-ls/cli/...
