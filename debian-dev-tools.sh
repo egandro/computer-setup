@@ -51,6 +51,7 @@ curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/v0.10.0/kind-$(uname)-
 chmod +x /usr/local/bin/kind
 
 # https://github.com/kubernetes-sigs/kind/issues/166
+# https://hub.docker.com/r/rossgeorgiev/kind-node-arm64
 case "${ARCH}" in
 	arm64) docker pull rossgeorgiev/kind-node-arm64;;
 esac
