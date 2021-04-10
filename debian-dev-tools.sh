@@ -26,6 +26,8 @@ echo "export GOPATH=\$HOME/.golib" >> /etc/profile.d/go-env.sh
 echo "export PATH=\$PATH:\$GOPATH/bin" >> /etc/profile.d/go-env.sh
 echo "export GOPATH=\$GOPATH:\$HOME/projects/go" >> /etc/profile.d/go-env.sh
 
+. /etc/profile.d/go-env.sh
+
 #
 # kubernetes
 #
@@ -35,6 +37,13 @@ rm -f /etc/apt/sources.list.d/kubernetes.list
 echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
 sudo apt-get install -y kubectl
+
+
+#
+# kind (not Pi 32bit)
+#
+curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/v0.10.0/kind-$(uname)-$(ARCH)"
+chmod +x /usr/local/bin/kind
 
 #
 # Lens
@@ -80,5 +89,4 @@ echo "export PATH=\$PATH:\$DOTNET_ROOT" >> /etc/profile.d/dotnet-env.sh
 #
 # cli docker registry tools
 #
-. /etc/profile.d/go-env.sh
 go get github.com/mayflower/docker-ls/cli/...

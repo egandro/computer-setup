@@ -107,12 +107,6 @@ then
 #pip3 install docker-compose
 fi
 
-if [ -z "$IS_RASPBERRY" ]
-then
-   curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/v0.10.0/kind-$(uname)-amd64"
-   chmod +x /usr/local/bin/kind
-fi
-
 ###################################################################
 # Tools
 ###################################################################
