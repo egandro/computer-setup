@@ -14,9 +14,9 @@ apt-get install -y default-jre default-jdk
 
 GO_LATEST=$(curl -s https://golang.org/VERSION?m=text)
 GO_INSTALLER=${GO_LATEST}.linux-${ARCH}.tar.gz
-wget -q -c -t0 "https://dl.google.com/go/${GO_INSTALLER}"
+wget -c -t0 "https://dl.google.com/go/${GO_INSTALLER}"
 rm -rf /usr/local/go && tar -C /usr/local -xzf ${GO_INSTALLER}
-rm -f ${GO_INSTALLER}
+###rm -f ${GO_INSTALLER}
 rm -f /etc/profile.d/go-env.sh
 echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile.d/go-env.sh
 echo "export GOPATH=\$HOME/.golib" >> /etc/profile.d/go-env.sh
@@ -44,16 +44,15 @@ get_latest_release() {
     sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
 }
 # get_latest_release lensapp/lens
-# only Lens-4.2.1.amd64.deb
 
 LENS_LATEST=$(get_latest_release lensapp/lens)
 LENS_LATEST=$(echo $LENS_LATEST | sed -e 's/v//')
 
-wget -q -c -t0 https://github.com/lensapp/lens/releases/download/v$LENS_LATEST{}/Lens-${LENS_LATEST}.${ARCH}.deb
+wget -c -t0 https://github.com/lensapp/lens/releases/download/v$LENS_LATEST{}/Lens-${LENS_LATEST}.${ARCH}.deb
 dpkg -i Lens-${LENS_LATEST}.${ARCH}.deb
 dpkg --configure -a
 apt --fix-broken install -y
-rm -f Lens-${LENS_LATEST}.${ARCH}.deb
+###rm -f Lens-${LENS_LATEST}.${ARCH}.deb
 
 #
 # DotNet Core
@@ -64,9 +63,9 @@ rm -f Lens-${LENS_LATEST}.${ARCH}.deb
 # arm, arm64, x64
 
 URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-${ARCH}\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
-wget -q -c -t0 ${URL}
+wget -c -t0 ${URL}
 rm -rf /usr/local/dotnet && mkdir -p /usr/local/dotnet && tar -C /usr/local/dotnet -xzf dotnet-sdk-linux-$(ARCH).tar.gz
-rm -f dotnet-sdk-linux-$(ARCH).tar.gz
+###rm -f dotnet-sdk-linux-$(ARCH).tar.gz
 
 
 rm -f /etc/profile.d/dotnet-env.sh
