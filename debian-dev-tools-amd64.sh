@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ARCH=$(dpkg --print-architecture)
+
 #
 # Java
 #
@@ -9,10 +11,12 @@ apt-get install -y default-jre default-jdk
 # golang
 #
 # most recent go version: wget "https://dl.google.com/go/$(curl https://golang.org/VERSION?m=text).linux-amd64.tar.gz"
-wget -q -c -t0 https://golang.org/dl/go1.16.2.linux-amd64.tar.gz
-rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.2.linux-amd64.tar.gz
-rm -f go1.16.2.linux-amd64.tar.gz
 
+GO_LATEST=$(curl -s https://golang.org/VERSION?m=text)
+GO_INSTALLER=${GO_LATEST}.linux-${ARCH}.tar.gz
+wget -q -c -t0 "https://dl.google.com/go/${GO_INSTALLER}"
+rm -rf /usr/local/go && tar -C /usr/local -xzf ${GO_INSTALLER}
+rm -f ${GO_INSTALLER}
 rm -f /etc/profile.d/go-env.sh
 echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile.d/go-env.sh
 echo "export GOPATH=\$HOME/.golib" >> /etc/profile.d/go-env.sh
@@ -42,11 +46,14 @@ get_latest_release() {
 # get_latest_release lensapp/lens
 # only Lens-4.2.1.amd64.deb
 
-wget -q -c -t0 https://github.com/lensapp/lens/releases/download/v4.1.5/Lens-4.1.5.amd64.deb
-dpkg -i Lens-4.1.5.amd64.deb
+LENS_LATEST=$(get_latest_release lensapp/lens)
+LENS_LATEST=$(echo $LENS_LATEST | sed -e 's/v//')
+
+wget -q -c -t0 https://github.com/lensapp/lens/releases/download/v$LENS_LATEST{}/Lens-${LENS_LATEST}.${ARCH}.deb
+dpkg -i Lens-${LENS_LATEST}.${ARCH}.deb
 dpkg --configure -a
 apt --fix-broken install -y
-rm -f Lens-4.1.5.amd64.deb
+rm -f Lens-${LENS_LATEST}.${ARCH}.deb
 
 #
 # DotNet Core
@@ -55,9 +62,11 @@ rm -f Lens-4.1.5.amd64.deb
 # https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json
 # URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-arm64\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
 # arm, arm64, x64
-wget -q -c -t0  https://download.visualstudio.microsoft.com/download/pr/73a9cb2a-1acd-4d20-b864-d12797ca3d40/075dbe1dc3bba4aa85ca420167b861b6/dotnet-sdk-5.0.201-linux-x64.tar.gz
-rm -rf /usr/local/dotnet && mkdir -p /usr/local/dotnet && tar -C /usr/local/dotnet -xzf dotnet-sdk-5.0.201-linux-x64.tar.gz
-rm -f dotnet-sdk-5.0.201-linux-x64.tar.gz
+
+URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-${ARCH}\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
+wget -q -c -t0 ${URL}
+rm -rf /usr/local/dotnet && mkdir -p /usr/local/dotnet && tar -C /usr/local/dotnet -xzf dotnet-sdk-linux-$(ARCH).tar.gz
+rm -f dotnet-sdk-linux-$(ARCH).tar.gz
 
 
 rm -f /etc/profile.d/dotnet-env.sh
