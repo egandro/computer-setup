@@ -53,6 +53,7 @@ chmod +x /usr/local/bin/kind
 # https://github.com/kubernetes-sigs/kind/issues/166
 # https://hub.docker.com/r/rossgeorgiev/kind-node-arm64
 case "${ARCH}" in
+	amd64) docker pull kindest/node;;
 	arm64) docker pull rossgeorgiev/kind-node-arm64;;
 esac
 
