@@ -138,6 +138,9 @@ apt install -y htop
 # Install zip
 apt install -y zip unzip
 
+# Exfat support
+apt-get install -y exfat-fuse exfat-utils
+
 ###################################################################
 # Vim
 ###################################################################
@@ -152,7 +155,7 @@ su - ${DEBIAN_USER} /bin/bash -c "echo 3 | update-alternatives --config editor"
 # fix mouse
 
 # (FUCK! debian!)
-VIM_VERSION=$(apt list vim 2>&1 | grep vim  | sed -e 's/.*://g' | sed -e 's/\.//' | sed -e 's/\..*//')
+VIM_VERSION=$(apt list vim 2>&1 | tail -1 | grep vim  | sed -e 's/.*://g' | sed -e 's/\.//' | sed -e 's/\..*//' | sed -e 's/ .*$//g')
 echo "if has('mouse')" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 echo "   set mouse=r" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
 echo "endif" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
