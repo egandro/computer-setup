@@ -47,7 +47,7 @@ sudo apt-get install -y kubectl
 #
 # kind (not Pi 32bit)
 #
-curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/v0.10.0/kind-$(uname)-$(ARCH)"
+curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/v0.10.0/kind-$(uname)-${ARCH}"
 chmod +x /usr/local/bin/kind
 
 # https://github.com/kubernetes-sigs/kind/issues/166
