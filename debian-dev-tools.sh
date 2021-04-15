@@ -34,7 +34,7 @@ echo "export GOPATH=\$GOPATH:\$HOME/projects/go" >> /etc/profile.d/go-env.sh
 . /etc/profile.d/go-env.sh
 
 #
-# kubernetes
+# kubernetes tools
 #
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
@@ -56,15 +56,6 @@ case "${ARCH}" in
 	amd64) docker pull kindest/node;;
 	arm64) docker pull rossgeorgiev/kind-node-arm64;;
 esac
-
-#
-# Kubernetes tools
-#
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-rm -f /etc/apt/sources.list.d/kubernetes.list
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-apt-get update
-apt-get install -y kubectl
 
 #
 # Lens
