@@ -11,11 +11,11 @@ usage
 $ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-install.sh && chmod 755 ./debian-install.sh && sudo ./debian-install.sh
 ```
 
-### Dev-86 Tools 
+### Dev Tools 
 usage
 
 ```bash
-$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-dev-tools-amd64.sh && chmod 755 ./debian-dev-tools-amd64.sh && sudo ./debian-dev-tools-amd64.sh
+$ wget https://raw.githubusercontent.com/egandro/computer-setup/master/debian-dev-tools.sh && chmod 755 ./debian-dev-tools.sh && sudo ./debian-dev-tools.sh
 ```
 
 
