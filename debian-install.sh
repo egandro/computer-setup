@@ -203,3 +203,7 @@ echo "Setup Git:"
 echo git config --global user.name "Your Name"
 echo git config --global user.email "youremail@yourdomain.com"
 echo git config --global credential.helper cache
+
+
+echo "Set timezone:"
+echo "sudo timedatectl set-timezone Europe/Berlin"
