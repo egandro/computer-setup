@@ -15,9 +15,9 @@ apt-get install -y default-jre default-jdk
 #
 # most recent go version: wget "https://dl.google.com/go/$(curl https://golang.org/VERSION?m=text).linux-amd64.tar.gz"
 case "${ARCH}" in
-	amd64) $(eval GO_ARCH=amd64);;
-	arm64) $(eval GO_ARCH=arm64);;
-	armhf) $(eval GO_ARCH=armv6l);;
+	amd64) GO_ARCH=amd64;;
+	arm64) GO_ARCH=arm64;;
+	armhf) GO_ARCH=armv6l;;
 	*) echo "unsupported architecture"; exit 1 ;;
 esac
 GO_LATEST=$(curl -s https://golang.org/VERSION?m=text)
@@ -89,9 +89,9 @@ fi
 # arm, arm64, x64
 
 case "${ARCH}" in
-	amd64) $(eval DOTNET_ARCH=x64);;
-	arm64) $(eval DOTNET_ARCH=arm64);;
-	armhf) $(eval DOTNET_ARCH=arm);;
+	amd64) DOTNET_ARCH=x64;;
+	arm64) DOTNET_ARCH=arm64;;
+	armhf) DOTNET_ARCH=arm;;
 	*) echo "unsupported architecture"; exit 1 ;;
 esac
 
