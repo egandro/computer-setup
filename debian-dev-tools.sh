@@ -88,10 +88,17 @@ fi
 # URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-arm64\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
 # arm, arm64, x64
 
-URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-${ARCH}\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
+case "${ARCH}" in
+	amd64) $(eval DOTNET_ARCH=x64);;
+	arm64) $(eval DOTNET_ARCH=arm64);;
+	armhf) $(eval DOTNET_ARCH=arm);;
+	*) echo "unsupported architecture"; exit 1 ;;
+esac
+
+URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-${DOTNET_ARCH}\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
 wget -c -t0 ${URL}
-rm -rf /usr/local/dotnet && mkdir -p /usr/local/dotnet && tar -C /usr/local/dotnet -xzf dotnet-sdk-linux-${ARCH}.tar.gz
-rm -f dotnet-sdk-linux-$(ARCH).tar.gz
+rm -rf /usr/local/dotnet && mkdir -p /usr/local/dotnet && tar -C /usr/local/dotnet -xzf dotnet-sdk-linux-${DOTNET_ARCH}.tar.gz
+rm -f dotnet-sdk-linux-$(DOTNET_ARCH).tar.gz
 
 
 rm -f /etc/profile.d/dotnet-env.sh
