@@ -28,6 +28,10 @@ rem npm install --global windows-build-tools
 
 choco install -y docker-compose
 
+choco install -y Kubernetes-cli
+
+choco install -y lens
+
 choco install -y python3
 
 choco install -y visualstudio2019enterprise
