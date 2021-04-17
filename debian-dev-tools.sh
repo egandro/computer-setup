@@ -109,7 +109,8 @@ echo "export PATH=\$PATH:\$DOTNET_ROOT" >> /etc/profile.d/dotnet-env.sh
 # Tools
 ###################################################################
 
-apt install -y strace ltrace
+# atm ltrace is not always available? backports?
+apt install -y strace 
 
 #
 # cli docker registry tools
