@@ -105,6 +105,12 @@ rm -f /etc/profile.d/dotnet-env.sh
 echo "export DOTNET_ROOT=/usr/local/dotnet" >> /etc/profile.d/dotnet-env.sh
 echo "export PATH=\$PATH:\$DOTNET_ROOT" >> /etc/profile.d/dotnet-env.sh
 
+###################################################################
+# Tools
+###################################################################
+
+apt install -y strace ltrace
+
 #
 # cli docker registry tools
 #
