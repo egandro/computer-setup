@@ -11,6 +11,11 @@ ARCH=$(dpkg --print-architecture)
 apt-get install -y default-jre default-jdk
 
 #
+# gdb
+#
+apt-get install -y gdb
+
+#
 # golang
 #
 # most recent go version: wget "https://dl.google.com/go/$(curl https://golang.org/VERSION?m=text).linux-amd64.tar.gz"
