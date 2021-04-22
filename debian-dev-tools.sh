@@ -143,6 +143,8 @@ go get github.com/mayflower/docker-ls/cli/...
   KREW=./krew-"${OS}_${ARCH}" &&
   "$KREW" install krew
 )
+# fix me!
+# export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 #kubelogin
 kubectl krew install oidc-login
 
