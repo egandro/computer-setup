@@ -11,6 +11,11 @@ ARCH=$(dpkg --print-architecture)
 apt-get install -y default-jre default-jdk
 
 #
+# Python
+#
+apt-get install -y python3-dev
+
+#
 # gdb
 #
 apt-get install -y gdb
