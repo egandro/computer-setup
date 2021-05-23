@@ -207,3 +207,9 @@ echo git config --global credential.helper cache
 
 echo "Set timezone:"
 echo "sudo timedatectl set-timezone Europe/Berlin"
+
+#
+# python version
+#
+update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2
+
