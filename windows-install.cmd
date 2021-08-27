@@ -34,6 +34,10 @@ choco install -y lens
 
 choco install -y python3
 
+choco install -y bginfo
+
+bginfo
+
 choco install -y visualstudio2019enterprise
 
 "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\StorePID.exe" %VS2019_ENT_SERIAL% 09260
