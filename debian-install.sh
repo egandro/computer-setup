@@ -14,11 +14,12 @@ then
   apt install -y linux-headers-$(uname -r)
 fi
 
+apt install -y dmidecode || echo ""
+
 ###################################################################
 # vbox driver
 ###################################################################
 
-apt install -y dmidecode || echo ""
 VBOX_VERSION=$(dmidecode  | grep vboxVer | sed -e 's/.*vboxVer_//')
 
 if [ !  -z "$VBOX_VERSION" ]
@@ -34,6 +35,21 @@ then
 
   cd ..
   rm -rf VBoxGuestAdditions_${VBOX_VERSION}.iso vbox
+fi
+
+###################################################################
+# vmware opensource driver
+###################################################################
+
+IS_VMWARE=$(dmidecode  | grep VMware)
+
+if [ !  -z "$IS_VMWARE" ]
+then
+  apt install -y open-vm-tools
+  if type Xorg 2>/dev/null; then
+    # we have an UI installed
+    apt install -y open-vm-tools-desktop 
+  fi
 fi
 
 ###################################################################
