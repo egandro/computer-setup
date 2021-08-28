@@ -32,6 +32,8 @@ choco install -y Kubernetes-cli
 
 choco install -y lens
 
+choco install -y redis-desktop-manager
+
 choco install -y python3
 
 choco install -y bginfo
