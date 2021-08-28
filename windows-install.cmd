@@ -36,7 +36,7 @@ rem FUCK them!
 rem choco install -y redis-desktop-manager
 
 rem get the free version
-choco install -y rdmfree
+choco install -y win-rdm
 
 choco install -y python3
 
