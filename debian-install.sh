@@ -231,7 +231,7 @@ echo "Set timezone:"
 echo "sudo timedatectl set-timezone Europe/Berlin"
 
 #
-# python version
+# python version (Debian 11 finally gave us Python 3.9 as default)
 #
-update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2
+## update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2
 
