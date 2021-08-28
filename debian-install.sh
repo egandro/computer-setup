@@ -86,10 +86,13 @@ apt install -y code
 
 if [ -z "$IS_RASPBERRY" ]
 then
-  wget -t0 -c  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  apt install -y ./google-chrome-stable_current_amd64.deb
-  apt --fix-broken install -y
-  rm -f ./google-chrome-stable_current_amd64.deb
+  if type Xorg 2>/dev/null; then
+    # we have an UI installed
+    wget -t0 -c  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    apt install -y ./google-chrome-stable_current_amd64.deb
+    apt --fix-broken install -y
+    rm -f ./google-chrome-stable_current_amd64.deb
+  fi
 fi
 
 ###################################################################
