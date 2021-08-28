@@ -36,9 +36,7 @@ choco install -y redis-desktop-manager
 
 choco install -y python3
 
-choco install -y bginfo
-
-bginfo
+choco install -y rainmeter
 
 choco install -y visualstudio2019enterprise
 
