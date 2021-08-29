@@ -154,6 +154,9 @@ apt install -y htop
 # Install zip
 apt install -y zip unzip
 
+# Install killall & co
+apt install -y psmisc
+
 # Exfat support
 apt-get install -y exfat-fuse exfat-utils
 
