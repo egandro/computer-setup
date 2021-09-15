@@ -263,6 +263,14 @@ echo git config --global credential.helper cache
 echo "Set timezone:"
 echo "sudo timedatectl set-timezone Europe/Berlin"
 
+# https://lanbugs.de/howtos/linux-tipps-tricks/tmux-die-screen-alternative/#
+
+echo "Setup tmux:"
+echo 'if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then'
+echo '    tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux'
+echo 'fi'
+
+
 #
 # python version (Debian 11 finally gave us Python 3.9 as default)
 #
