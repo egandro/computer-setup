@@ -151,6 +151,14 @@ apt install -y zsh fzf
 # Install tmux
 apt install -y tmux
 
+cat << EOF > $HOME/${DEBIAN_USER}/.tmux.conf 
+set -g bell-action any
+set -g visual-bell on
+set -g visual-activity on
+EOF
+
+chown ${DEBIAN_USER}:${DEBIAN_USER} $HOME/${DEBIAN_USER}/.tmux.conf
+
 # Install oh my zsh
 su - ${DEBIAN_USER} /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
