@@ -145,8 +145,14 @@ apt install -y net-tools
 # Install mc
 apt install -y mc
 
-# Install screen
-apt install -y screen
+# Install zsh
+apt install -y zsh fzf
+
+# Install tmux
+apt install -y tmux
+
+# Install oh my zsh
+su - ${DEBIAN_USER} /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Install htop
 apt install -y htop
