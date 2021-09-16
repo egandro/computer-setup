@@ -266,7 +266,7 @@ echo "sudo timedatectl set-timezone Europe/Berlin"
 # https://lanbugs.de/howtos/linux-tipps-tricks/tmux-die-screen-alternative/#
 
 echo "Setup tmux:"
-echo 'if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then'
+echo 'if [[ -z "$TMUX" ]] && [[ -z "$VSCODE_GIT_ASKPASS_MAIN" ]] && [ "$SSH_CONNECTION" != "" ]; then'
 echo '    tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux'
 echo 'fi'
 
