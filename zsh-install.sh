@@ -8,7 +8,7 @@ emulate sh
 emulate zsh
 EOF
 
-cat << EOF > .zshrc
+cat << EOF >> .zshrc
 #https://lanbugs.de/howtos/linux-tipps-tricks/tmux-die-screen-alternative/#
 if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
         tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux
