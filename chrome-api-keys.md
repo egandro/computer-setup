@@ -6,7 +6,7 @@
 - <https://www.reddit.com/r/raspberry_pi/comments/nvghf1/enable_chromium_sync_on_latest_chromium_version/>
 
 
-
+- Put keys in /etc/chrome_dev.conf
 - GOOGLE_API_KEY
 - GOOGLE_DEFAULT_CLIENT_ID
 - GOOGLE_DEFAULT_CLIENT_SECRET
