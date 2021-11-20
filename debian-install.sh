@@ -1,8 +1,13 @@
 #!/bin/bash
 set -x
 
-DEBIAN_USER=$(ls /home)
 IS_RASPBERRY=$(grep Pi /proc/device-tree/model 2>/dev/null && echo 1)
+if [ -z "$IS_RASPBERRY" ]
+then
+  DEBIAN_USER=$(ls /home)
+else
+  DEBIAN_USER=pi
+fi
 
 apt-get update
 apt-get -y dist-upgrade
