@@ -151,5 +151,5 @@ go get github.com/mayflower/docker-ls/cli/...
 # fix me!
 # export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 #kubelogin
-kubectl krew install oidc-login
+#kubectl krew install oidc-login
 
