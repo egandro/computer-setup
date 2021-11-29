@@ -216,6 +216,13 @@ if [ $(arch) == "x86_64" ]; then
   chmod +x /usr/local/bin/kind
 fi
 
+if [ ! -z "$IS_RASPBERRY" ]
+then
+  sed -i '$ s/$/ cgroup_memory=1 swapaccount=1 cgroup_enable=memory dwc_otg.lpm_enable=0/' /boot/cmdline.txt
+  yes | rpi-update
+fi
+
+
 ###################################################################
 # minikube
 ###################################################################
