@@ -23,14 +23,14 @@ apt-get install -y gdb
 #
 # golang
 #
-# most recent go version: wget "https://dl.google.com/go/$(curl https://golang.org/VERSION?m=text).linux-amd64.tar.gz"
+# most recent go version: wget "https://dl.google.com/go/$(curl -L https://golang.org/VERSION?m=text).linux-amd64.tar.gz"
 case "${ARCH}" in
 	amd64) GO_ARCH=amd64;;
 	arm64) GO_ARCH=arm64;;
 	armhf) GO_ARCH=armv6l;;
 	*) echo "unsupported architecture"; exit 1 ;;
 esac
-GO_LATEST=$(curl -s https://golang.org/VERSION?m=text)
+GO_LATEST=$(curl -L -s https://golang.org/VERSION?m=text)
 GO_INSTALLER=${GO_LATEST}.linux-${GO_ARCH}.tar.gz
 wget -c -t0 "https://dl.google.com/go/${GO_INSTALLER}"
 rm -rf /usr/local/go && tar -C /usr/local -xzf ${GO_INSTALLER}
