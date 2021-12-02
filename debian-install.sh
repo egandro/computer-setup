@@ -156,6 +156,13 @@ apt install -y zsh fzf
 # Install tmux
 apt install -y tmux
 
+cat << EOF > /home/${DEBIAN_USER}/.zprofile
+emulate sh
+. ~/.profile
+emulate zsh
+EOF
+chown ${DEBIAN_USER}:${DEBIAN_USER} /home/${DEBIAN_USER}/.zprofile
+
 cat << EOF > $HOME/${DEBIAN_USER}/.tmux.conf 
 set -g bell-action any
 set -g visual-bell on
