@@ -85,7 +85,7 @@ if type Xorg 2>/dev/null; then
 
   apt install -y apt-transport-https
   apt update
-  apt install -y code 
+  apt install -y code gnome-keyring
 fi
 
 ###################################################################
