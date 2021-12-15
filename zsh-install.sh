@@ -15,3 +15,10 @@ if [[ -z "$TMUX" ]] && [ "$SSH_CONNECTION" != "" ]; then
 fi
 export EDITOR=vim
 EOF
+
+cat << EOF > .tmux.conf 
+set -g bell-action any
+set -g visual-bell on
+set -g visual-activity on
+set-option -g history-limit 50000
+EOF
