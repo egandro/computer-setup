@@ -76,6 +76,12 @@ chmod +x /usr/local/bin/kind
 #  sed -i '$ s/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 swapaccount=1/' /boot/cmdline.txt
 #fi
 
+###################################################################
+# minikube
+###################################################################
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${ARCH}
+install minikube-linux-${ARCH} /usr/local/bin/minikube
+
 # https://github.com/kubernetes-sigs/kind/issues/166
 # https://hub.docker.com/r/rossgeorgiev/kind-node-arm64
 case "${ARCH}" in
