@@ -69,6 +69,13 @@ sudo apt-get install -y helm
 curl -Lo /usr/local/bin/kind "https://kind.sigs.k8s.io/dl/v0.11.1/kind-$(uname)-${ARCH}"
 chmod +x /usr/local/bin/kind
 
+#if [ ! -z "$IS_RASPBERRY" ]
+#then
+#  #sed -i '$ s/$/ cgroup_memory=1 swapaccount=1 cgroup_enable=memory dwc_otg.lpm_enable=0/' /boot/cmdline.txt
+#  #yes | rpi-update
+#  sed -i '$ s/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1 swapaccount=1/' /boot/cmdline.txt
+#fi
+
 # https://github.com/kubernetes-sigs/kind/issues/166
 # https://hub.docker.com/r/rossgeorgiev/kind-node-arm64
 case "${ARCH}" in
