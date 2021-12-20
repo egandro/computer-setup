@@ -214,15 +214,6 @@ apt install -y sudo
 
 usermod -aG sudo ${DEBIAN_USER}  || echo ""
 
-
-###################################################################
-# kind
-###################################################################
-if [ $(arch) == "x86_64" ]; then
-  curl -Lo /usr/local/bin/kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
-  chmod +x /usr/local/bin/kind
-fi
-
 #if [ ! -z "$IS_RASPBERRY" ]
 #then
 #  #sed -i '$ s/$/ cgroup_memory=1 swapaccount=1 cgroup_enable=memory dwc_otg.lpm_enable=0/' /boot/cmdline.txt
