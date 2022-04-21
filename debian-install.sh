@@ -21,6 +21,12 @@ fi
 
 apt install -y dmidecode || echo ""
 
+# add to sudo group
+if [ -z "$IS_RASPBERRY" ]
+then
+  usermod -a -G sudo ${DEBIAN_USER}
+fi
+
 ###################################################################
 # vbox driver
 ###################################################################
