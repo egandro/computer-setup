@@ -11,7 +11,7 @@ fi
 
 apt-get update
 apt-get -y dist-upgrade
-apt install -y wget curl gpg build-essential dkms
+apt install -y wget curl gpg build-essential dkms mc
 apt install -y p7zip-full
 
 if [ -z "$IS_RASPBERRY" ]
@@ -146,9 +146,6 @@ apt install -y git subversion
 
 # Install ifconfig
 apt install -y net-tools
-
-# Install mc
-apt install -y mc
 
 # Install zsh
 apt install -y zsh fzf
