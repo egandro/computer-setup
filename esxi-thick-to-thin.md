@@ -2,8 +2,8 @@
 
 ```
 #https://www.alitajran.com/convert-thick-provisioned-disk-to-thin-on-vmware-esxi/
-VMNAME=myDebian
-DS=datastore2
+export VMNAME=myDebian
+export DS=datastore2
 vmkfstools -i /vmfs/volumes/${DS}/${VMNAME}/${VMNAME}.vmdk -d thin /vmfs/volumes/${DS}/${VMNAME}/${VMNAME}-thin.vmdk
 mv /vmfs/volumes/${DS}/${VMNAME}/${VMNAME}-flat.vmdk /vmfs/volumes/${DS}/${VMNAME}/${VMNAME}-flat.vmdk.old
 mv /vmfs/volumes/${DS}/${VMNAME}/${VMNAME}-thin-flat.vmdk /vmfs/volumes/${DS}/${VMNAME}/${VMNAME}-flat.vmdk
