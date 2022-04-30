@@ -12,13 +12,13 @@ if [ ! -f "/vmfs/volumes/${DS}/${VMNAME}/${VMNAME}.vmdk" ]; then
     exit 1
 fi
 
-# check the disk
-vmkfstools --fix check "/vmfs/volumes/${DS}/${VMNAME}/${VMNAME}.vmdk" || exit 1
-
 VMID=$(vim-cmd /vmsvc/getallvms | grep  "${VMNAME}" | awk '{print $1}')
 
 # turn off vm if running
 vim-cmd vmsvc/power.off ${VMID} || true
+
+# check the disk
+vmkfstools --fix check "/vmfs/volumes/${DS}/${VMNAME}/${VMNAME}.vmdk" || exit 1
 
 vmkfstools -i "/vmfs/volumes/${DS}/${VMNAME}/${VMNAME}.vmdk" -d thin "/vmfs/volumes/${DS}/${VMNAME}/${VMNAME}-thin.vmdk"
 mv "/vmfs/volumes/${DS}/${VMNAME}/${VMNAME}-flat.vmdk" "/vmfs/volumes/${DS}/${VMNAME}/${VMNAME}-flat.vmdk.old"
