@@ -24,6 +24,8 @@ choco install -y nodejs
 
 choco install -y vmwareworkstation
 
+choco install -y virtualbox
+
 choco install -y vlc
 
 choco install -y foxitreader
