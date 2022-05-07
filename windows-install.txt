@@ -34,6 +34,8 @@ choco install -y inkscape
 
 choco install -y gimp
 
+choco install -y microsoft-teams.install
+
 rem choco install androidstudio
 rem choco install android-sdk
 rem choco install arduino rem 1.9
