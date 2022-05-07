@@ -1,3 +1,2 @@
-# export key (powershell)
-
-Invoke-Command  {reg export 'HKEY_CURRENT_USER\Software\SimonTatham\PuTTY' .\putty.reg
+rem export key 
+reg export "HKEY_CURRENT_USER\Software\SimonTatham\PuTTY"  .\putty.reg /y
