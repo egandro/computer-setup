@@ -61,3 +61,6 @@ Set-Service -Name sshd -StartupType Automatic
 Start-Service sshd
 Start-Service ssh-agent
 
+--
+# open port 8022 on firewall
+netsh advfirewall firewall add rule name= "Open Port 8022" dir=in action=allow protocol=TCP localport=8022
