@@ -43,7 +43,7 @@ rem choco install android-sdk
 rem choco install arduino rem 1.9
 
 rem --- RDP Manager
-choco install -y choco install mremoteng
+choco install -y mremoteng
 
 rem ICMP
 rem https://www.howtogeek.com/howto/windows-vista/allow-pings-icmp-echo-request-through-your-windows-vista-firewall/
