@@ -42,7 +42,6 @@ rem choco install androidstudio
 rem choco install android-sdk
 rem choco install arduino rem 1.9
 
-
 rem ICMP
 rem https://www.howtogeek.com/howto/windows-vista/allow-pings-icmp-echo-request-through-your-windows-vista-firewall/
 
@@ -61,6 +60,9 @@ Set-Service -Name sshd -StartupType Automatic
 Start-Service sshd
 Start-Service ssh-agent
 
---
-# open port 8022 on firewall
+rem --
+rem open port 8022 on firewall
 netsh advfirewall firewall add rule name= "Open Port 8022" dir=in action=allow protocol=TCP localport=8022
+
+rem --- RDP Manager
+rem https://www.cinspiration.de/download.html 
