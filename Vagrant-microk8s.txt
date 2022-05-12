@@ -1,0 +1,124 @@
+# ###################################################################################
+# Windows (with choco)
+#
+# choco install -y lens
+# choco install -y virtualbox /ExtensionPack
+# choco install -y vagrant
+#
+# reboot here
+# ###################################################################################
+#
+# https://www.regur.net/blog/how-to-install-debian-using-vagrant/
+# https://www.youtube.com/watch?v=GPVH9fHW0Dk&list=PLYX-WWvoiu6Usu-u3cYmojGVQ_PWD3pX0&index=1
+#
+#####################################################################################
+#
+# rename this file to "Vagrant"
+# to start microk8s cluster
+#
+# $ vagrant up
+#
+# > 1) put the config file in your local .kube folder (can be linux machine on the same host only network)
+# > 2) Open Lens (e.g. on windows) here and import the config file
+#
+# $ vagrant ssh controller
+# $ vagrant ssh node1
+#
+# $ vagrant halt
+# $ vagrant destroy -f
+#
+
+BOX_BASE = "debian/bullseye64"
+BOX_RAM_MB = "4096"
+BOX_CPU_COUNT = "2"
+
+CONTROLLER_NAME="controller"
+CONTROLLER_IP="192.168.33.10"
+CONTROLLER_SSH_PORT="2223"
+
+NODE1_NAME="node1"
+NODE1_IP="192.168.33.11"
+NODE1_SSH_PORT="2224"
+
+Vagrant.configure("2") do |config|
+  config.vm.box = BOX_BASE
+  config.vm.box_check_update = false
+  # we use the default
+  #config.vm.synced_folder "../data", "/vagrant"
+
+  config.vm.provider "virtualbox" do |vb|
+      vb.memory = BOX_RAM_MB
+      vb.cpus = BOX_CPU_COUNT
+    end
+
+  config.vm.provision "shell", inline: <<-EOF
+    # apt update
+    # apt install -y snapd sudo jq
+    # echo 'export PATH=/snap/bin:$PATH' >> ~/.bashrc
+    # source ~/.bashrc
+    # snap install core
+    # snap install microk8s --classic
+    # microk8s.status --wait-ready
+    # usermod -a -G microk8s vagrant
+    # chown -f -R vagrant ~/.kube
+
+    # echo "alias kubectl='microk8s.kubectl'" > /home/vagrant/.bash_aliases
+    # chown vagrant:vagrant /home/vagrant/.bash_aliases
+    # echo "alias kubectl='microk8s.kubectl'" > /root/.bash_aliases
+    # chown root:root /root/.bash_aliases
+  EOF
+
+  config.vm.define "controller" do |controller|
+    controller.vm.network "private_network", ip: CONTROLLER_IP
+    controller.vm.network :forwarded_port, guest: 22, host: CONTROLLER_SSH_PORT, id: 'ssh'
+
+    controller.vm.hostname = CONTROLLER_NAME
+    controller.vm.define CONTROLLER_NAME
+    controller.vm.provider "virtualbox" do |vb|
+      vb.name = CONTROLLER_NAME
+    end
+
+    controller.vm.provision "shell", env: {"NODE1_IP"=>ENV['NODE1_IP']}, inline: <<-EOF
+      rm -f /vagrant/node1.sh /vagrant/config
+
+      export net_ip="$(ip route | grep default | grep eth0 | cut -d' ' -f3)"
+      export local_ip="$(ip route | grep eth1 | cut -d' ' -f9)"
+      export microk8s_internal_ip="$(microk8s kubectl get node -o json | jq -r '.items[].status.addresses[] | select(.type=="InternalIP") | .address')"
+
+      # replace internal ip with the local_ip
+      microk8s config | sed "s|${microk8s_internal_ip}|${local_ip}|g" > /vagrant/config
+
+      #echo "${CONTROLLER_IP} controller controller" >> /etc/hosts
+      echo "${NODE1_IP} node1 node1" >> /etc/hosts
+
+      echo "enable microk8s services"
+      microk8s enable dashboard
+      microk8s enable dns
+      microk8s enable registry
+      microk8s enable helm3
+      microk8s enable metallb 192.168.33.150-192.168.33.250
+      microk8s enable prometheus
+      microk8s enable rbac
+      microk8s status
+
+      # add '--worker'
+      microk8s.add-node | grep $local_ip | sed -e 's/$/ --worker/' > /vagrant/node1.sh
+    EOF
+  end
+
+  config.vm.define "node1" do |node1|
+    node1.vm.network "private_network", ip: NODE1_IP
+    node1.vm.network :forwarded_port, guest: 22, host: NODE1_SSH_PORT, id: 'ssh'
+    node1.vm.hostname = NODE1_NAME
+    node1.vm.define NODE1_NAME
+    node1.vm.provider "virtualbox" do |vb|
+      vb.name = NODE1_NAME
+    end
+
+    node1.vm.provision "shell", env: {"CONTROLLER_IP"=>ENV['CONTROLLER_IP']}, inline: <<-EOF
+      bash -x /vagrant/node1.sh
+      echo "${CONTROLLER_IP} controller controller" >> /etc/hosts
+    EOF
+  end
+
+end
