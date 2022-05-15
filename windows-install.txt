@@ -39,7 +39,6 @@ choco install -y gimp
 choco install -y microsoft-teams.install
 
 rem java
-rem choco install -y openjre17
 rem choco install -y openjdk17
 
 rem choco install androidstudio
