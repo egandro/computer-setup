@@ -28,6 +28,8 @@ choco install -y vmwareworkstation
 
 choco install -y virtualbox /ExtensionPack
 
+choco install -y vagrant
+
 choco install -y vlc
 
 choco install -y foxitreader
