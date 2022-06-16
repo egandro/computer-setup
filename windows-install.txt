@@ -60,6 +60,7 @@ rem ssh
 rem https://stackoverflow.com/questions/16212816/setting-up-openssh-for-windows-using-public-key-authentication
 ---
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+Start-Service sshd
 
 (Get-Content "$Env:PROGRAMDATA\ssh\sshd_config") -Replace 'Match Group', '#Match Group' | Set-Content "$Env:PROGRAMDATA\ssh\sshd_config"
 (Get-Content "$Env:PROGRAMDATA\ssh\sshd_config") -Replace 'AuthorizedKeysFile', '#AuthorizedKeysFile' | Set-Content "$Env:PROGRAMDATA\ssh\sshd_config"
