@@ -115,27 +115,15 @@ fi
 #
 # DotNet Core
 #
-# from here: https://github.com/dotnet/core/blob/main/release-notes/5.0/releases.json
-# https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json
-# URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-arm64\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
-# arm, arm64, x64
 
-case "${ARCH}" in
-	amd64) DOTNET_ARCH=x64;;
-	arm64) DOTNET_ARCH=arm64;;
-	armhf) DOTNET_ARCH=arm;;
-	*) echo "unsupported architecture"; exit 1 ;;
-esac
+wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
 
-URL=$(curl -s https://raw.githubusercontent.com/dotnet/core/main/release-notes/5.0/releases.json  | grep -P "https:.*dotnet-sdk-linux-${DOTNET_ARCH}\.tar\.gz" | head -1 | sed -e "s/^.*http/http/g" | sed -e "s/\"//g")
-wget -c -t0 ${URL}
-rm -rf /usr/local/dotnet && mkdir -p /usr/local/dotnet && tar -C /usr/local/dotnet -xzf dotnet-sdk-linux-${DOTNET_ARCH}.tar.gz
-rm -f dotnet-sdk-linux-${DOTNET_ARCH}.tar.gz
-
-
-rm -f /etc/profile.d/dotnet-env.sh
-echo "export DOTNET_ROOT=/usr/local/dotnet" >> /etc/profile.d/dotnet-env.sh
-echo "export PATH=\$PATH:\$DOTNET_ROOT" >> /etc/profile.d/dotnet-env.sh
+sudo apt-get update; \
+  sudo apt-get install -y apt-transport-https && \
+  sudo apt-get update && \
+  sudo apt-get install -y dotnet-sdk-6.0
 
 ###################################################################
 # Tools
