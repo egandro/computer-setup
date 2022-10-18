@@ -87,6 +87,10 @@ docker-machine
 docker-machine create --virtualbox-disk-size "100000" --virtualbox-memory "8192" --virtualbox-cpu-count "4" default
 ```
 
+mstsc to handle 4k screens
+
+  - Tutorial how to make a mstsc copy and add HiDPI flag <https://poweruser.blog/remote-desktop-client-on-hidpi-retina-displays-work-around-pixel-scaling-issues-1529f142ca93>
+
 ### Android Termux
 
 ```bash
