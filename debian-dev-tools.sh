@@ -103,13 +103,16 @@ get_latest_release() {
 if [ -z "$IS_RASPBERRY" ]
 then
    # get_latest_release lensapp/lens
-   LENS_LATEST=$(get_latest_release lensapp/lens)
+   LENS_LATEST=$(get_latest_release MuhammedKalkan/OpenLens)
    LENS_LATEST=$(echo $LENS_LATEST | sed -e 's/v//')
-   wget -c -t0 https://github.com/lensapp/lens/releases/download/v${LENS_LATEST}/Lens-${LENS_LATEST}.${ARCH}.deb
-   dpkg -i Lens-${LENS_LATEST}.${ARCH}.deb
+   #wget -c -t0 https://github.com/MuhammedKalkan/OpenLens/releases/download/v${LENS_LATEST}/OpenLens-${LENS_LATEST}.${ARCH}.deb
+   wget -c -t0 https://github.com/MuhammedKalkan/OpenLens/releases/download/v6.1.11/OpenLens-6.1.11.deb
+   #dpkg -i Lens-${LENS_LATEST}.${ARCH}.deb
+   dpkg -i OpenLens-6.1.11.deb
    dpkg --configure -a
    apt --fix-broken install -y
-   rm -f Lens-${LENS_LATEST}.${ARCH}.deb
+   #rm -f Lens-${LENS_LATEST}.${ARCH}.deb
+   rm -f OpenLens-6.1.11.deb
 fi
 
 #
