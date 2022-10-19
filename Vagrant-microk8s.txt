@@ -1,7 +1,7 @@
 # ###################################################################################
 # Windows (with choco)
 #
-# choco install -y lens
+# choco install -y openlens
 # choco install -y virtualbox /ExtensionPack
 # choco install -y vagrant
 #
