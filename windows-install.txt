@@ -30,6 +30,8 @@ choco install -y virtualbox /ExtensionPack
 
 choco install -y vagrant
 
+choco install -y kubernetes-cli
+
 choco install -y vlc
 
 choco install -y foxitreader
