@@ -42,8 +42,8 @@ cp configs/config $HOME/.kube
 ### Windows
 
 ```
-mkdir %USER%\.kube
-copy configs\config %USER%\.kube
+mkdir %USERPROFILE%\.kube
+copy configs\config %USERPROFILE%\.kube
 ```
 
 ### Accessing k8s from host
