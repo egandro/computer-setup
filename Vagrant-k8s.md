@@ -13,6 +13,8 @@ You will need:
 
 ```
 git clone https://github.com/techiescamp/vagrant-kubeadm-kubernetes
+# nfs server enhanced ... /data is shared among all hosts
+git clone https://github.com/egandro/vagrant-kubeadm-kubernetes 
 cd vagrant-kubeadm-kubernetes
 vagrant up
 ```
