@@ -266,10 +266,15 @@ echo "sudo timedatectl set-timezone Europe/Berlin"
 
 # https://lanbugs.de/howtos/linux-tipps-tricks/tmux-die-screen-alternative/#
 
-echo "Setup tmux:"
+echo "Setup tmux: in $HOME/.zshrc"
 echo 'if [[ -z "$TMUX" ]] && [[ -z "$VSCODE_GIT_ASKPASS_MAIN" ]] && [ "$SSH_CONNECTION" != "" ]; then'
 echo '    tmux attach-session -t ssh_tmux || tmux new-session -s ssh_tmux'
 echo 'fi'
+
+# https://unix.stackexchange.com/questions/537637/sshing-into-system-with-zsh-as-default-shell-doesnt-run-etc-profile
+echo "Source /etc/profile.d/*.sh in zsh"
+echo "emulate sh -c 'source /etc/profile.d/*.sh'"
+
 
 
 #
