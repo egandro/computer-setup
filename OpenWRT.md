@@ -6,6 +6,7 @@
 ## Installation
 
 - https://openwrt.org/docs/guide-user/virtualization/vmware
+- https://kb.vmware.com/s/article/1028943
 
 
 ```
@@ -75,5 +76,27 @@ opkg update
 opkg install hostapd
 ```
 
-##
+## Build USB Driver
+
+```
+$ sudo apt-get install libncurses-dev zlib1g-dev gawk rsync flex libelf-dev liblzma-dev autoconf build-essential bison libssl-dev 
+$ VERSION=22.03.2
+$ git clone https://git.openwrt.org/openwrt/openwrt.git
+$ cd openwrt
+$ git pull
+$ #git branch -a
+$ #git tag
+$ git checkout v${VERSION}
+$ ./scripts/feeds update -a
+$ ./scripts/feeds install -a
+$ wget https://downloads.openwrt.org/releases/${VERSION}/targets/x86/64/config.buildinfo -O .config
+$ curl -L https://api.github.com/repos/plntyk/openwrt/tarball \
+ | tar xz --wildcards "*/package/kernel/rtl8812au-ct" --strip-components=3 -C ./package/kernel
+$ make menuconfig -> save
+$ make tools/install
+$ make toolchain/install
+$ make target/linux/compile
+$ make package/kernel/linux/compile
+$ make package/kernel/rtl88x2bu-cl/compile 
+```
 
