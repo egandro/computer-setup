@@ -97,6 +97,7 @@ $ make tools/install
 $ make toolchain/install
 $ make target/linux/compile
 $ make package/kernel/linux/compile
-$ make package/kernel/rtl88x2bu-ct/compile 
+$ make package/kernel/rtl8812au-ct/compile
+
 ```
 
