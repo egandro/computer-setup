@@ -46,3 +46,22 @@ $ rm -f openwrt-${VERSION}-x86-64-generic-ext4-combined.vmdk
 ```
 
 Copy "OpenWRT.vmdk" + "OpenWRT-flat.vmdk" to VM's folder and attach it with the UI to the machine as harddisk.
+
+
+## Basic Setup
+
+- Turn on Machine
+- Login to Terminal via ESXi - set root password
+
+```
+$ vi /etc/config/network
+
+# change interface 'lan' to
+
+config interface 'lan'
+        option device 'br-lan'
+        option proto 'dhcp'
+        
+#####
+$ reboot
+```
