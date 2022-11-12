@@ -64,4 +64,16 @@ config interface 'lan'
         
 #####
 $ reboot
+# test: login wia http://openwrt...
+# install ssh key http://openwrt.XXX/cgi-bin/luci/admin/system/admin/sshkeys
 ```
+
+ssh to openwrt
+
+```
+opkg update
+opkg install hostapd
+```
+
+##
+
