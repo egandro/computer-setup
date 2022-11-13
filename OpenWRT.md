@@ -74,6 +74,16 @@ ssh to openwrt
 ```
 opkg update
 opkg install hostapd
+opkg install kmod-usb-core
+opkg install kmod-usb2
+opkg install kmod-usb3
+opkg install kmod-usb-storage
+opkg install usbutils
+
+opkg update 
+opkg install kmod-rtl8xxxu # this installs all sort of stuff
+opkg install kmod-rtlwifi-usb
+opkg remove kmod-rtl8xxxu 
 ```
 
 ## Build USB Driver
@@ -98,6 +108,15 @@ $ make toolchain/install
 $ make target/linux/compile
 $ make package/kernel/linux/compile
 $ make package/kernel/rtl8812au-ct/compile
+$ ls -la bin/targets/x86/64/packages/kmod-rtl8812au-ct_*_x86_64.ipk
+$ scp bin/targets/x86/64/packages/kmod-rtl8812au-ct_*_x86_64.ipk root@openwrt...:/root
 
 ```
+ssh to openwrt
+
+```
+opkg update
+opkg install /root/kmod-rtl8812au-ct_*_x86_64.ipk
+```
+
 
