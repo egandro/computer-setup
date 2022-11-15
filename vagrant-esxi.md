@@ -1,6 +1,13 @@
 # Vagrant ESXi driver
 
+```bash
+# provision.sh
+#!/bin/bash
+apt-get update
+```
+
 ```env
+#.env
 ESXI_HOSTNAME=esxi.myserver
 ESXI_USERNAME=root
 ESXI_UPASSWORD=key:~/.ssh/your_ssh_key
@@ -8,10 +15,11 @@ ESXI_DISK_STORE=datastore2
 GUEST_NAME=debianbox
 GUEST_USERNAME=vagrant
 BOX=generic/debian11
-PROVISION_SCRIPT=./script.sh
+PROVISION_SCRIPT=./provision.sh
 ```
 
 ```ruby
+# Vagrant
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
