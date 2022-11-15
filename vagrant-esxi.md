@@ -1,6 +1,7 @@
 # Vagrant ESXi driver
 
-<https://github.com/josenk/vagrant-vmware-esxi>
+- <https://github.com/josenk/vagrant-vmware-esxi>
+- <https://developer.vmware.com/web/tool/4.4.0/ovf> (or newer)
 
 
 ```
