@@ -36,7 +36,7 @@ services:
       - MSSQL_PID=Developer
       - MSSQL_DB=mydb
       - MSSQL_USER=myuser
-      - MSSQL_PASSWORD=Root#1234
+      - MSSQL_PASSWORD=Secret#1234
       - MSSQL_DB_AUDIT_LOG=events_service_audit_log
 
 volumes:
