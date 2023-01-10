@@ -72,3 +72,8 @@ $ esxcfg-advcfg -s 1 /UserVars/SuppressShellWarning # enable supressing
 
 https://github.com/DrDonk/esxi-unlocker/releases/tag/v4.0.5
 
+
+## Autostarter (needs to be enable >= ESXi 8.0)
+
+- Manage / System / Autostart / Globally Enable
+
