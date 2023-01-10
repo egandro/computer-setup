@@ -52,3 +52,10 @@ vim-cmd vmsvc/snapshot.create ${VMID} "SnapshotName" "Snapshot Description" true
 
 
 ```
+
+## Hostname
+
+```
+[root@esxi:~] esxcli system hostname set --host=esxi
+[root@esxi:~] esxcli system hostname set --fqdn=esxi.foo.bar
+```
