@@ -60,14 +60,6 @@ vim-cmd vmsvc/snapshot.create ${VMID} "SnapshotName" "Snapshot Description" true
 [root@esxi:~] esxcli system hostname set --fqdn=esxi.foo.bar
 ```
 
-## Suppress SSH warning
-
-```
-$ esxcfg-advcfg -g /UserVars/SuppressShellWarning # list
-$ esxcfg-advcfg -s 1 /UserVars/SuppressShellWarning # enable supressing
-```
-
-
 ## Unlocker
 
 https://github.com/DrDonk/esxi-unlocker/releases/tag/v4.0.5
@@ -77,3 +69,46 @@ https://github.com/DrDonk/esxi-unlocker/releases/tag/v4.0.5
 
 - Manage / System / Autostart / Globally Enable
 
+
+## SSH 
+
+- https://github.com/danielewood/misc/blob/master/VMWare-ESXi-ssh-pubkey.md
+
+### Enable SSH + Suppress SSH warning
+
+```
+$ vim-cmd hostsvc/enable_ssh
+$ esxcfg-advcfg -g /UserVars/SuppressShellWarning # list
+$ esxcfg-advcfg -s 1 /UserVars/SuppressShellWarning # enable supressing
+```
+
+### remove password access
+```
+cat<<'EOF'>>/etc/ssh/sshd_config
+PermitRootLogin without-password
+UsePAM no
+ChallengeResponseAuthentication no
+PasswordAuthentication no
+PubkeyAcceptedKeyTypes=+ssh-ed25519
+
+EOF
+```
+
+## keep password access
+
+```
+cat<<'EOF'>>/etc/ssh/sshd_config
+PubkeyAcceptedKeyTypes=+ssh-ed25519
+
+EOF
+```
+
+```
+$ cat $HOME/.ssh/id_ed25519.pub | ssh root@esxi 'cat >> /etc/ssh/keys-root/authorized_keys'
+```
+
+```
+$ ssh root@esxi
+$ chmod 600 -R /etc/ssh/keys-root/authorized_keys
+$ /etc/init.d/SSH restart
+```
