@@ -59,3 +59,10 @@ vim-cmd vmsvc/snapshot.create ${VMID} "SnapshotName" "Snapshot Description" true
 [root@esxi:~] esxcli system hostname set --host=esxi
 [root@esxi:~] esxcli system hostname set --fqdn=esxi.foo.bar
 ```
+
+## Suppress SSH warning
+
+```
+$ esxcfg-advcfg -g /UserVars/SuppressShellWarning # list
+$ esxcfg-advcfg -s 1 /UserVars/SuppressShellWarning # enable supressing
+```
