@@ -66,3 +66,9 @@ vim-cmd vmsvc/snapshot.create ${VMID} "SnapshotName" "Snapshot Description" true
 $ esxcfg-advcfg -g /UserVars/SuppressShellWarning # list
 $ esxcfg-advcfg -s 1 /UserVars/SuppressShellWarning # enable supressing
 ```
+
+
+## Unlocker
+
+https://github.com/DrDonk/esxi-unlocker/releases/tag/v4.0.5
+
