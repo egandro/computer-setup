@@ -24,15 +24,17 @@ choco install -y winrar
 
 choco install -y nodejs
 
-choco install -y vmwareworkstation
-
-rem choco install -y virtualbox /ExtensionPack
+rem choco install -y vmwareworkstation
 
 choco install -y virtualbox --params "/NoDesktopShortcut /ExtensionPack"
 
 choco install -y vagrant
 
 choco install -y kubernetes-cli
+
+choco install -y kubernetes-helm
+
+choco install -y openlens
 
 choco install -y vlc
 
@@ -42,10 +44,10 @@ choco install -y inkscape
 
 choco install -y gimp
 
-choco install -y microsoft-teams.install
+rem choco install -y microsoft-teams.install
 
 rem java
-rem choco install -y openjdk17
+choco install -y openjdk
 
 rem choco install androidstudio
 rem choco install android-sdk
@@ -53,9 +55,6 @@ rem choco install arduino rem 1.9
 
 rem C++ package manager
 rem choco install -y conan
-
-rem --- RDP Manager
-rem choco install -y mremoteng
 
 rem ICMP
 rem https://www.howtogeek.com/howto/windows-vista/allow-pings-icmp-echo-request-through-your-windows-vista-firewall/
