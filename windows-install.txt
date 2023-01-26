@@ -28,7 +28,7 @@ choco install -y nodejs
 
 rem choco install -y vmwareworkstation
 
-choco install -y virtualbox --params "/NoDesktopShortcut /ExtensionPack"
+choco install -y virtualbox --params "/NoDesktopShortcut /ExtensionPack" --ignore-checksums
 
 choco install -y vagrant
 
@@ -36,7 +36,7 @@ choco install -y kubernetes-cli
 
 choco install -y kubernetes-helm
 
-choco install -y openlens
+choco install -y openlens --ignore-checksums
 
 choco install -y vlc
 
@@ -45,6 +45,8 @@ choco install -y foxitreader
 choco install -y inkscape
 
 choco install -y gimp
+
+choco install -y nordvpn
 
 rem choco install -y microsoft-teams.install
 
