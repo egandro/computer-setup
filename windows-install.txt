@@ -4,6 +4,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 choco install -y googlechrome --ignore-checksums
 
+choco install -y firefox
+
 choco install -y vscode
 
 choco install -y 7zip
