@@ -48,6 +48,8 @@ choco install -y gimp
 
 choco install -y nordvpn
 
+choco install -y realvnc
+
 rem choco install -y microsoft-teams.install
 
 rem java
