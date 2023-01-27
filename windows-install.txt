@@ -76,6 +76,11 @@ Start-Service sshd
 
 (Get-Content "$Env:PROGRAMDATA\ssh\sshd_config") -Replace 'Match Group', '#Match Group' | Set-Content "$Env:PROGRAMDATA\ssh\sshd_config"
 (Get-Content "$Env:PROGRAMDATA\ssh\sshd_config") -Replace 'AuthorizedKeysFile', '#AuthorizedKeysFile' | Set-Content "$Env:PROGRAMDATA\ssh\sshd_config"
+
+Add-Content "$Env:PROGRAMDATA\ssh\sshd_config" "AuthorizedKeysFile  .ssh/authorized_keys"
+Add-Content "$Env:PROGRAMDATA\ssh\sshd_config" "PasswordAuthentication no"
+Add-Content "$Env:PROGRAMDATA\ssh\sshd_config" "PubkeyAuthentication yes"
+
 Set-Service -Name ssh-agent -StartupType Automatic
 Set-Service -Name sshd -StartupType Automatic
 Start-Service sshd
