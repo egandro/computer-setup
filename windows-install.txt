@@ -55,9 +55,11 @@ rem choco install -y microsoft-teams.install
 rem java
 choco install -y openjdk
 
+# choco install -y mingw
+
 rem choco install androidstudio
 rem choco install android-sdk
-rem choco install arduino rem 1.9
+rem choco install arduino
 
 rem C++ package manager
 rem choco install -y conan
