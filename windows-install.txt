@@ -57,6 +57,8 @@ choco install -y openjdk
 
 # choco install -y mingw
 
+# choco install -y audacity
+
 rem choco install androidstudio
 rem choco install android-sdk
 rem choco install arduino
