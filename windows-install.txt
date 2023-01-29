@@ -36,8 +36,6 @@ choco install -y vagrant-vmware-utility
 
 vagrant plugin install vagrant-vmware-desktop
 
-vagrant plugin install vagrant-disksize
-
 choco install -y kubernetes-cli
 
 choco install -y kubernetes-helm
