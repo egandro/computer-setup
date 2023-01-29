@@ -32,6 +32,8 @@ choco install -y virtualbox --params "/NoDesktopShortcut /ExtensionPack" --ignor
 
 choco install -y vagrant
 
+vagrant plugin install vagrant-vmware-desktop
+
 choco install -y kubernetes-cli
 
 choco install -y kubernetes-helm
