@@ -64,7 +64,7 @@ choco install -y openjdk
 # choco install -y audacity
 
 rem choco install androidstudio
-rem choco install android-sdk
+rem choco install android-sdk # this is outdated!
 rem choco install arduino
 
 rem C++ package manager
