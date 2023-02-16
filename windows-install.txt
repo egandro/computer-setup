@@ -54,6 +54,10 @@ choco install -y nordvpn
 
 choco install -y vnc-viewer
 
+choco install -y docker-cli
+
+# set DOCKER_HOST=ssh://foo.abar
+
 rem choco install -y microsoft-teams.install
 
 rem java
