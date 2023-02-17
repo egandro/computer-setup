@@ -82,7 +82,7 @@ $ esxcfg-advcfg -g /UserVars/SuppressShellWarning # list
 $ esxcfg-advcfg -s 1 /UserVars/SuppressShellWarning # enable supressing
 ```
 
-### remove password access
+### remove password access with ed25519 keys
 ```
 cat<<'EOF'>>/etc/ssh/sshd_config
 PermitRootLogin without-password
@@ -94,7 +94,7 @@ PubkeyAcceptedKeyTypes=+ssh-ed25519
 EOF
 ```
 
-## keep password access
+### keep password access with ed25519 keys
 
 ```
 cat<<'EOF'>>/etc/ssh/sshd_config
