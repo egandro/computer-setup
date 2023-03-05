@@ -234,8 +234,8 @@ done
 
 locale-gen
 
-# alters /etc/default/locale
-localectl set-locale LANG=en_US.UTF-8 LC_TIME=en_GB.UTF-8
+# alters /etc/default/locale - LC_TIME=C.UTF-8 gives 24h format
+localectl set-locale LANG=en_US.UTF-8 LC_TIME=C.UTF-8
 
 apt-get install -y exfat-fuse
 apt-get install -y exfat-utils
