@@ -164,7 +164,7 @@ apt install -y git subversion
 apt install -y net-tools
 
 # Install zsh
-apt install -y zsh fzf
+apt install -y zsh fzf autojump
 
 # Install tmux
 apt install -y tmux
