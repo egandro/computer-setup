@@ -64,6 +64,23 @@ then
 fi
 
 ###################################################################
+# qemu drivers
+###################################################################
+
+IS_QEMU=$(lscpu | grep KVM 2>/dev/null && echo 1)
+
+if [ !  -z "$IS_QEMU" ]
+then
+  apt install -y open-vm-tools
+  if type Xorg 2>/dev/null; then
+    # we have an UI installed
+    apt install -y qemu-guest-agent
+    systemctl enable qemu-guest-agent || true
+    systemctl start qemu-guest-agent || true
+  fi
+fi
+
+###################################################################
 # nodejs
 ###################################################################
 
@@ -120,14 +137,16 @@ apt-get install -y \
     curl \
     gnupg
 
-curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 echo \
-  "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
-  $(lsb_release -cs) stable" |  tee /etc/apt/sources.list.d/docker.list > /dev/null
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
  
 apt-get update
-apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 usermod -a -G docker ${DEBIAN_USER}
 
@@ -241,6 +260,28 @@ apt-get install -y exfat-fuse
 apt-get install -y exfat-utils
 
 ###################################################################
+# kubernetes and helm
+###################################################################
+apt-get install -y apt-transport-https
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
+apt-get update
+apt-get install -y kubectl
+
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+apt-get update
+apt-get install -y helm
+
+###################################################################
+# python
+###################################################################
+
+apt-get install -y python3-pip
+apt-get install -y python-is-python3
+
+###################################################################
 # cleanup
 ###################################################################
 
@@ -269,10 +310,4 @@ echo 'fi'
 echo "Source /etc/profile.d/*.sh in zsh"
 echo "emulate sh -c 'source /etc/profile.d/*.sh'"
 
-
-
-#
-# python version (Debian 11 finally gave us Python 3.9 as default)
-#
-## update-alternatives --install /usr/bin/python python /usr/bin/python3.7 2
 
