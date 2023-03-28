@@ -169,6 +169,9 @@ apt install -y zsh fzf autojump
 # Install tmux
 apt install -y tmux
 
+# Install jq
+apt install -y jq
+
 cat << EOF > /home/${DEBIAN_USER}/.zprofile
 emulate sh
 . ~/.profile
