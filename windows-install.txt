@@ -67,7 +67,7 @@ choco install -y openjdk
 
 # choco install -y mingw
 
-# choco install make
+# choco install -y make
 
 # choco install -y jq
 
