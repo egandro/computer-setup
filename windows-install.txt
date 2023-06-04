@@ -42,6 +42,8 @@ choco install -y kubernetes-helm
 
 choco install -y openlens --ignore-checksums
 
+choco install -y another-redis-desktop-manager 
+
 choco install -y vlc
 
 choco install -y foxitreader
