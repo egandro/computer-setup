@@ -32,11 +32,10 @@ choco install -y Kubernetes-cli
 
 choco install -y lens
 
-rem FUCK them!
-rem choco install -y redis-desktop-manager
+choco install -y another-redis-desktop-manager 
 
 rem get the free version
-choco install -y win-rdm
+rem choco install -y win-rdm
 
 choco install -y python3
 
