@@ -23,6 +23,10 @@ brew install docker-compose
 #brew install --cask foxitreader
 #brew install openjdk
 
+# pg client
+#brew install libpq
+#brew link --force libpq
+
 brew install autojump
 brew install fzf
 brew install tmux
