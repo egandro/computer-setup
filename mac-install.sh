@@ -13,6 +13,7 @@ brew install wget
 brew install kubernetes-cli
 brew install helm
 brew install go
+brew install htop
 brew install --cask another-redis-desktop-manager 
 brew install --cask openlens
 brew install --cask firefox
