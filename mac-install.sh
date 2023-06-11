@@ -23,3 +23,6 @@ brew install docker
 brew install docker-compose
 #brew install --cask foxitreader
 #brew install openjdk
+
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
