@@ -16,13 +16,14 @@ brew install go
 brew install --cask another-redis-desktop-manager 
 brew install --cask openlens
 brew install --cask firefox
-brew install fzf
-brew install tmux
 brew install jq
 brew install docker
 brew install docker-compose
 #brew install --cask foxitreader
 #brew install openjdk
 
-
+brew install autojump
+brew install fzf
+brew install tmux
+npm install -g @angular/cli 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
