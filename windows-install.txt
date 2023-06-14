@@ -10,7 +10,10 @@ choco install -y vscode
 
 choco install -y 7zip
 
-choco install -y git
+rem choco install -y git
+rem with bash
+
+choco install -y git.install --force --params "'/GitAndUnixToolsOnPath'"
 
 choco install -y svn
 
