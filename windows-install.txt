@@ -33,11 +33,13 @@ rem choco install -y vmwareworkstation
 
 choco install -y virtualbox --params "/NoDesktopShortcut /ExtensionPack" --ignore-checksums
 
-choco install -y vagrant
+rem choco install -y vagrant
 
-choco install -y vagrant-vmware-utility
+rem choco install -y vagrant-vmware-utility
 
-vagrant plugin install vagrant-vmware-desktop
+rem vagrant plugin install vagrant-vmware-desktop
+
+choco install -y s3browser
 
 choco install -y kubernetes-cli
 
