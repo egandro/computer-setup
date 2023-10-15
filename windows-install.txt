@@ -68,6 +68,8 @@ choco install -y docker-cli
 
 choco install -y docker-compose
 
+choco install -y sudo
+
 # set DOCKER_HOST=ssh://foo.abar
 
 rem choco install -y microsoft-teams.install
