@@ -22,7 +22,7 @@ choco install -y svn
 
 choco install -y wget
 
-choco install -y youtube-dl
+choco install -y yt-dlp
 
 choco install -y winscp
 
