@@ -20,6 +20,8 @@ brew install --cask firefox
 brew install jq
 brew install docker
 brew install docker-compose
+brew install docker-buildx
+brew install vlc
 #brew install --cask foxitreader
 #brew install openjdk
 
