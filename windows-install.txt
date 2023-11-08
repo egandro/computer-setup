@@ -5,8 +5,6 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 choco install -y googlechrome --ignore-checksums
 
-choco install -y nearby-share
-
 choco install -y firefox
 
 choco install -y vscode
@@ -43,6 +41,8 @@ rem choco install -y vagrant-vmware-utility
 rem vagrant plugin install vagrant-vmware-desktop
 
 choco install -y s3browser
+
+rem choco install -y python3
 
 choco install -y kubernetes-cli
 
@@ -90,6 +90,16 @@ rem choco install android-sdk # this is outdated!
 rem choco install arduino
 
 choco install powertoys
+
+rem visual studio
+rem set VS2019_ENT_SERIAL=1.2.3.4.5.6
+rem choco install -y visualstudio2019enterprise
+rem "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\StorePID.exe" %VS2019_ENT_SERIAL% 09260
+rem choco install -y visualstudio2019-workload-nativedesktop
+rem choco install -y visualstudio2019-workload-manageddesktop
+rem choco install -y visualstudio2019-workload-netcorebuildtools
+
+rem choco install -y cmake.install --installargs '"ADD_CMAKE_TO_PATH=System"'
 
 rem C++ package manager
 rem choco install -y conan
