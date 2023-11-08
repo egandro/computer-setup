@@ -34,7 +34,7 @@ choco install -y nodejs
 
 rem choco install -y vmwareworkstation
 
-choco install -y virtualbox --params "/NoDesktopShortcut /ExtensionPack" --ignore-checksums
+rem choco install -y virtualbox --params "/NoDesktopShortcut /ExtensionPack" --ignore-checksums
 
 rem choco install -y vagrant
 
@@ -88,6 +88,8 @@ choco install -y openjdk
 rem choco install androidstudio
 rem choco install android-sdk # this is outdated!
 rem choco install arduino
+
+choco install powertoys
 
 rem C++ package manager
 rem choco install -y conan
