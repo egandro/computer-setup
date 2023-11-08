@@ -89,7 +89,7 @@ rem choco install androidstudio
 rem choco install android-sdk # this is outdated!
 rem choco install arduino
 
-choco install powertoys
+choco install -y powertoys
 
 rem visual studio
 rem set VS2019_ENT_SERIAL=1.2.3.4.5.6
