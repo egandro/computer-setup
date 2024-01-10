@@ -322,4 +322,8 @@ echo 'fi'
 echo "Source /etc/profile.d/*.sh in zsh"
 echo "emulate sh -c 'source /etc/profile.d/*.sh'"
 
+# lazydocker
+# go install github.com/jesseduffield/lazydocker@latest
+
+
 
