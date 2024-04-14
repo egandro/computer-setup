@@ -26,6 +26,9 @@ choco install -y winscp
 
 choco install -y putty
 
+rem this is finally the cygwin version - drives are /cygdrive/c/foo/
+choco install -y rsync
+
 choco install -y winrar
 
 choco install -y nodejs
@@ -95,11 +98,11 @@ choco install -y powertoys
 
 rem visual studio
 rem set VS2019_ENT_SERIAL=1.2.3.4.5.6
-rem choco install -y visualstudio2019enterprise
+rem choco install -y visualstudio2022enterprise
 rem "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\StorePID.exe" %VS2019_ENT_SERIAL% 09260
-rem choco install -y visualstudio2019-workload-nativedesktop
-rem choco install -y visualstudio2019-workload-manageddesktop
-rem choco install -y visualstudio2019-workload-netcorebuildtools
+rem choco install -y visualstudio2022-workload-nativedesktop
+rem choco install -y visualstudio2022-workload-manageddesktop
+rem choco install -y visualstudio2022-workload-netcorebuildtools
 
 rem choco install -y cmake.install --installargs '"ADD_CMAKE_TO_PATH=System"'
 
@@ -134,5 +137,5 @@ rem neofetch via scoop - https://www.makeuseof.com/how-to-install-and-use-neofet
 
 rem --
 rem open port 8022 on firewall
-netsh advfirewall firewall add rule name= "Open Port 8022" dir=in action=allow protocol=TCP localport=8022
+rem netsh advfirewall firewall add rule name= "Open Port 8022" dir=in action=allow protocol=TCP localport=8022
 
