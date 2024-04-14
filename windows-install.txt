@@ -26,8 +26,8 @@ choco install -y winscp
 
 choco install -y putty
 
-rem this is finally the cygwin version - drives are /cygdrive/c/foo/
-choco install -y rsync
+rem rsync for windows sill sucks
+choco install -y rclone
 
 choco install -y winrar
 
