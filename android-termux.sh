@@ -1,6 +1,8 @@
 pkg update -y
 pkg upgrade -y
 termux-setup-storage
+pkg install -y which
+pkg install -y file
 pkg install -y vim
 echo "set mouse=r" >> $HOME/.vimrc
 pkg install -y tmux
