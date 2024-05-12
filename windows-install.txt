@@ -65,6 +65,10 @@ choco install -y inkscape
 
 choco install -y gimp
 
+choco install -y drawio
+
+choco install -y pencil
+
 choco install -y nordvpn
 
 choco install -y vnc-viewer
