@@ -75,6 +75,8 @@ choco install -y docker-compose
 
 choco install -y sudo
 
+choco install -y localsend
+
 rem choco install -y mc --package-parameters='/modifypath'
 
 # set DOCKER_HOST=ssh://foo.abar
