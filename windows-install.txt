@@ -16,9 +16,11 @@ rem with bash
 
 choco install -y git.install --force --params "'/GitAndUnixToolsOnPath'"
 
-choco install -y svn
+rem choco install -y svn
 
 choco install -y wget
+
+choco install -y curl
 
 choco install -y yt-dlp
 
