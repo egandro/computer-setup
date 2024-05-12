@@ -100,6 +100,9 @@ rem choco install arduino
 
 choco install -y powertoys
 
+rem choco install -y wireguard
+
+
 rem visual studio
 rem set VS2019_ENT_SERIAL=1.2.3.4.5.6
 rem choco install -y visualstudio2022enterprise
