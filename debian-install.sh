@@ -180,6 +180,9 @@ apt install -y tmux
 # Install jq
 apt install -y jq
 
+# Install xsel
+apt install -y xsel
+
 cat << EOF > /home/${DEBIAN_USER}/.zprofile
 emulate sh
 . ~/.profile
