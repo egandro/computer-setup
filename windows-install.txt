@@ -84,6 +84,8 @@ choco install -y localsend
 rem choco install -y mc --package-parameters='/modifypath'
 
 # set DOCKER_HOST=ssh://foo.abar
+# store in system:
+# setx DOCKER_HOST ssh://1.2.3.4
 
 rem choco install -y microsoft-teams.install
 
