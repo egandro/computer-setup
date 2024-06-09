@@ -1,3 +1,5 @@
+# setup termux storage in apps
+
 pkg update -y
 pkg upgrade -y
 termux-setup-storage
