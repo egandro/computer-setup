@@ -18,8 +18,13 @@ pkg install -y ffmpeg
 curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp  -o /data/data/com.termux/files/usr/bin/yt-dlp
 chmod a+rx /data/data/com.termux/files/usr/bin/yt-dlp
 
+pkg install -y iproute2
+pkg install -y dnsutils
+pkg install -y jq
+pkg install -y ncdu
+pkg install -y make
+
 #pkg install -y nodejs
-#pkg install -y make
 #pkg install -y golang
 #pkg install -y clang
 #pkg install -y python
