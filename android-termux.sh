@@ -13,8 +13,8 @@ pkg install -y wget
 pkg install -y openssh
 pkg install -y termux-auth
 pkg install -y ffmpeg
-curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /data/data/com.termux/files/usr/bin/youtube-dl
-chmod a+rx /data/data/com.termux/files/usr/bin/youtube-dl
+#curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /data/data/com.termux/files/usr/bin/youtube-dl
+#chmod a+rx /data/data/com.termux/files/usr/bin/youtube-dl
 
 #pkg install -y nodejs
 #pkg install -y make
