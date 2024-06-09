@@ -2,7 +2,7 @@
 
 pkg update -y
 pkg upgrade -y
-termux-setup-storage
+#termux-setup-storage
 pkg install -y which
 pkg install -y file
 pkg install -y vim
@@ -15,8 +15,8 @@ pkg install -y wget
 pkg install -y openssh
 pkg install -y termux-auth
 pkg install -y ffmpeg
-#curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /data/data/com.termux/files/usr/bin/youtube-dl
-#chmod a+rx /data/data/com.termux/files/usr/bin/youtube-dl
+curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp  -o /data/data/com.termux/files/usr/bin/yt-dlp
+chmod a+rx /data/data/com.termux/files/usr/bin/yt-dlp
 
 #pkg install -y nodejs
 #pkg install -y make
