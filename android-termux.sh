@@ -12,6 +12,7 @@ echo "set -g mouse off" >> $HOME/.tmux.conf
 pkg install -y mc
 pkg install -y git
 pkg install -y wget
+pkg install -y man
 pkg install -y openssh
 pkg install -y termux-auth
 pkg install -y ffmpeg
