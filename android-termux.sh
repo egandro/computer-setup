@@ -30,6 +30,7 @@ pkg install -y make
 #pkg install -y python
 
 # additional repos
+# https://github.com/termux-user-repository/tur
 #pkg install -y tur-repo
 
 apt autoremove -y
