@@ -29,4 +29,7 @@ pkg install -y make
 #pkg install -y clang
 #pkg install -y python
 
+# additional repos
+#pkg install -y tur-repo
+
 apt autoremove -y
