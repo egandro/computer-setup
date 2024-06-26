@@ -67,7 +67,7 @@ fi
 # qemu drivers
 ###################################################################
 
-IS_QEMU=$(lscpu | grep KVM 2>/dev/null && echo 1)
+IS_QEMU=$(lscpu | grep Hypervisor | grep KVM 2>/dev/null && echo 1)
 
 if [ !  -z "$IS_QEMU" ]
 then
