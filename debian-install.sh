@@ -49,19 +49,19 @@ then
 fi
 
 ###################################################################
-# vmware opensource driver
+# vmware opensource driver ... good bye!
 ###################################################################
 
-IS_VMWARE=$(dmidecode  | grep VMware)
+# IS_VMWARE=$(dmidecode  | grep VMware)
 
-if [ !  -z "$IS_VMWARE" ]
-then
-  apt install -y open-vm-tools
-  if type Xorg 2>/dev/null; then
-    # we have an UI installed
-    apt install -y open-vm-tools-desktop 
-  fi
-fi
+# if [ !  -z "$IS_VMWARE" ]
+# then
+#   apt install -y open-vm-tools
+#   if type Xorg 2>/dev/null; then
+#     # we have an UI installed
+#     apt install -y open-vm-tools-desktop 
+#   fi
+# fi
 
 ###################################################################
 # qemu drivers
@@ -232,14 +232,15 @@ su - ${DEBIAN_USER} /bin/bash -c "echo 'export EDITOR=vim' >> /home/${DEBIAN_USE
 su - ${DEBIAN_USER} /bin/bash -c "echo 3 | update-alternatives --config editor"
 
 
-# fix mouse
+# fix mouse (fuck debian!)
 
-# (FUCK! debian!)
-VIM_VERSION=$(apt list vim 2>&1 | tail -1 | grep vim  | sed -e 's/.*://g' | sed -e 's/\.//' | sed -e 's/\..*//' | sed -e 's/ .*$//g')
-echo "if has('mouse')" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
-echo "   set mouse=r" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
-echo "endif" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
-echo "set background=dark" >> /usr/share/vim/vim${VIM_VERSION}/defaults.vim
+cat <<EOF >> /etc/vim/vimrc.local
+augroup system_mouse_override
+  autocmd!
+  autocmd VimEnter * set mouse=r
+  autocmd VimEnter * set background=dark
+augroup END
+EOF
 
 ###################################################################
 # sudo
