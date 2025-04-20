@@ -49,6 +49,8 @@ choco install -y s3browser
 
 rem choco install -y python3
 
+rem choco install windirstat /y
+
 choco install -y kubernetes-cli
 
 choco install -y kubernetes-helm
