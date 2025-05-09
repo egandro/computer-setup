@@ -106,7 +106,7 @@ rem choco install androidstudio
 rem choco install android-sdk # this is outdated!
 rem choco install arduino
 
-choco install -y powertoys
+rem choco install -y powertoys
 
 choco install -y wireguard
 
