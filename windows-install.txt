@@ -79,7 +79,7 @@ choco install -y docker-cli
 
 choco install -y docker-compose
 
-choco install -y sudo
+rem choco install -y sudo
 
 choco install -y localsend
 
@@ -96,9 +96,9 @@ choco install -y openjdk
 
 # choco install -y mingw
 
-# choco install -y make
+choco install -y make
 
-# choco install -y jq
+choco install -y jq
 
 # choco install -y audacity
 
@@ -108,7 +108,7 @@ rem choco install arduino
 
 choco install -y powertoys
 
-rem choco install -y wireguard
+choco install -y wireguard
 
 
 rem visual studio
