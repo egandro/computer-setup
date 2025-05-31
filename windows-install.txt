@@ -158,3 +158,9 @@ rem --
 rem open port 8022 on firewall
 rem netsh advfirewall firewall add rule name= "Open Port 8022" dir=in action=allow protocol=TCP localport=8022
 
+rem sshfs
+rem https://github.com/winfsp/sshfs-win
+rem choco install sshfs /y
+rem net use X: \\sshfs\user@server\foo\bar (relative to $HOME of user)
+rem net use X: /delete
+
