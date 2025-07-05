@@ -24,6 +24,8 @@ choco install -y curl
 
 choco install -y yt-dlp
 
+choco install -y ffmpeg
+
 choco install -y winscp
 
 choco install -y putty
