@@ -2,6 +2,13 @@
 
 ## Debian
 
+### bootstrap
+usage
+
+```bash
+$ curl -s https://raw.githubusercontent.com/egandro/computer-setup/master/bootstrap.sh | bash
+```
+
 ### System
 usage
 
