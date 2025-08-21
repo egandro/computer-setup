@@ -5,6 +5,12 @@
 ### bootstrap
 usage
 
+Debian, Termux
+```bash
+$ wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/master/bootstrap.sh | bash
+```
+
+MacOS
 ```bash
 $ curl -s https://raw.githubusercontent.com/egandro/computer-setup/master/bootstrap.sh | bash
 ```
