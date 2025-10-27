@@ -3,9 +3,9 @@ rem https://learn.microsoft.com/en-us/visualstudio/deployment/tutorial-import-pu
 
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
-choco install -y googlechrome --ignore-checksums
+choco install -y brave
 
-choco install -y firefox
+rem choco install -y firefox
 
 choco install -y vscode
 
@@ -28,7 +28,7 @@ choco install -y ffmpeg
 
 choco install -y winscp
 
-choco install -y putty
+rem choco install -y putty
 
 rem rsync for windows sill sucks
 choco install -y rclone
