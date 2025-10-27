@@ -28,8 +28,6 @@ choco install -y ffmpeg
 
 choco install -y winscp
 
-rem choco install -y putty
-
 rem rsync for windows sill sucks
 choco install -y rclone
 
@@ -37,15 +35,7 @@ choco install -y winrar
 
 choco install -y nodejs
 
-rem choco install -y vmwareworkstation
-
 rem choco install -y virtualbox --params "/NoDesktopShortcut /ExtensionPack" --ignore-checksums
-
-rem choco install -y vagrant
-
-rem choco install -y vagrant-vmware-utility
-
-rem vagrant plugin install vagrant-vmware-desktop
 
 choco install -y s3browser
 
@@ -81,17 +71,11 @@ choco install -y docker-cli
 
 choco install -y docker-compose
 
-rem choco install -y sudo
-
 choco install -y localsend
-
-rem choco install -y mc --package-parameters='/modifypath'
 
 # set DOCKER_HOST=ssh://foo.abar
 # store in system:
 # setx DOCKER_HOST ssh://1.2.3.4
-
-rem choco install -y microsoft-teams.install
 
 rem java
 choco install -y openjdk
@@ -111,7 +95,6 @@ rem choco install arduino
 rem choco install -y powertoys
 
 choco install -y wireguard
-
 
 rem visual studio
 rem set VS2019_ENT_SERIAL=1.2.3.4.5.6
