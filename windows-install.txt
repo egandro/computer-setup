@@ -53,7 +53,9 @@ choco install -y another-redis-desktop-manager
 
 choco install -y vlc
 
-choco install -y foxitreader
+rem choco install -y foxitreader
+
+choco install -y okular
 
 choco install -y inkscape
 
