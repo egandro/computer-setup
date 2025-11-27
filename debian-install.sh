@@ -218,8 +218,8 @@ apt install -y zip unzip
 # Install killall & co
 apt install -y psmisc
 
-# Install zoxide
-apt install -y zoxide 
+# Install zoxide (needs fzf for zi)
+apt install -y zoxide fzf
 
 # bash -> eval "$(zoxide init bash)"
 # zsh -> eval "$(zoxide init zsh)"
