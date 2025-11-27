@@ -218,6 +218,12 @@ apt install -y zip unzip
 # Install killall & co
 apt install -y psmisc
 
+# Install zoxide
+apt install -y zoxide 
+
+# bash -> eval "$(zoxide init bash)"
+# zsh -> eval "$(zoxide init zsh)"
+
 # Exfat support
 apt-get install -y exfat-fuse exfat-utils
 
