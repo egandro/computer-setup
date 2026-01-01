@@ -391,20 +391,15 @@
         - name: Fix permissions of Oh My Zsh
           ansible.builtin.file:
             path: "{{ target_user_home }}/.oh-my-zsh"
-            owner: "{{ target_user }}"
-            group: "{{ target_user }}"
+            owner: "{{ target_user_info.uid }}"
+            group: "{{ target_user_info.group }}"
             recurse: yes
 
-        - name: Ensure .zshrc exists
-          ansible.builtin.copy:
-            src: "{{ target_user_home }}/.oh-my-zsh/templates/zshrc.zsh-template"
-            dest: "{{ target_user_home }}/.zshrc"
-            owner: "{{ target_user }}"
-            group: "{{ target_user }}"
-            mode: '0644'
-            force: no
-            remote_src: yes
-            backup: yes
+        - name: Fix permissions of .zshrc
+          ansible.builtin.file:
+            path: "{{ target_user_home }}/.zshrc"
+            owner: "{{ target_user_info.uid }}"
+            group: "{{ target_user_info.group }}"
 
     - name: Install Dotfiles
       ansible.builtin.shell: |
