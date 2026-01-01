@@ -372,7 +372,12 @@
 
 
     - name: Install Oh My Zsh
-      shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+      ansible.builtin.shell: |
+        if [ -d "$ZSH" ]; then
+          echo "Oh My Zsh is already installed at $ZSH"
+          exit 0
+        fi
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
       become_user: "{{ target_user }}"
       environment:
         ZSH: "{{ target_user_home }}/.oh-my-zsh"
