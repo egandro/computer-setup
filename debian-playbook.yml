@@ -164,11 +164,17 @@
       ansible.builtin.set_fact:
         node_lts_major: "{{ node_lts_version_output.stdout | regex_replace('^v(\\d+)\\..*', '\\1') }}"
 
+    - name: Uninstall yarn via npm
+      ansible.builtin.shell: |
+        if command -v npm > /dev/null; then
+          npm uninstall -g yarn
+        fi
+      changed_when: false
+
     - name: Remove current Node.js
       apt:
         name:
           - nodejs
-          - yarn
         state: absent
 
     - name: Add NodeSource repo
@@ -179,8 +185,14 @@
       apt:
         name:
           - nodejs
-          - yarn
         state: present
+
+    - name: Install yarn via npm
+      ansible.builtin.shell: |
+        if command -v npm > /dev/null; then
+          npm install -g yarn
+        fi
+      changed_when: false
 
     - name: Gather installed packages
       ansible.builtin.package_facts:
@@ -419,23 +431,66 @@
           command: localectl set-locale LANG=en_US.UTF-8 LC_TIME=C.UTF-8
           changed_when: false
 
-    # - name: Setup Kubernetes and Helm
-    #   block:
-    #     - name: Install kubectl
-    #       shell: |
-    #         curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-    #         echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' > /etc/apt/sources.list.d/kubernetes.list
-    #         apt-get update && apt-get install -y kubectl
-    #       args:
-    #         creates: /usr/bin/kubectl
+    - name: Setup Kubernetes and Helm
+      block:
+        - name: Ensure keyrings directory exists
+          ansible.builtin.file:
+            path: /etc/apt/keyrings
+            state: directory
+            mode: '0755'
 
-    #     - name: Install Helm
-    #       shell: |
-    #         curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
-    #         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" > /etc/apt/sources.list.d/helm-stable-debian.list
-    #         apt-get update && apt-get install -y helm
-    #       args:
-    #         creates: /usr/sbin/helm
+        - name: Download Kubernetes GPG key
+          ansible.builtin.get_url:
+            url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+            dest: /etc/apt/keyrings/kubernetes-apt-keyring.asc
+            mode: '0644'
+            force: true
+
+        - name: Dearmor Kubernetes GPG key
+          ansible.builtin.shell:
+            cmd: gpg --dearmor < /etc/apt/keyrings/kubernetes-apt-keyring.asc > /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+            creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+        - name: Add Kubernetes repository (DEB822)
+          ansible.builtin.copy:
+            dest: /etc/apt/sources.list.d/kubernetes.sources
+            content: |
+              Types: deb
+              URIs: https://pkgs.k8s.io/core:/stable:/v1.32/deb/
+              Suites: /
+              Signed-By: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+            mode: '0644'
+
+        - name: Download Helm GPG key
+          ansible.builtin.get_url:
+            url: https://baltocdn.com/helm/signing.asc
+            dest: /usr/share/keyrings/helm.asc
+            mode: '0644'
+            force: true
+
+        - name: Dearmor Helm GPG key
+          ansible.builtin.shell:
+            cmd: gpg --dearmor < /usr/share/keyrings/helm.asc > /usr/share/keyrings/helm.gpg
+            creates: /usr/share/keyrings/helm.gpg
+
+        - name: Add Helm repository (DEB822)
+          ansible.builtin.copy:
+            dest: /etc/apt/sources.list.d/helm.sources
+            content: |
+              Types: deb
+              URIs: https://baltocdn.com/helm/stable/debian/
+              Suites: all
+              Components: main
+              Signed-By: /usr/share/keyrings/helm.gpg
+            mode: '0644'
+
+        - name: Install kubectl and helm
+          ansible.builtin.apt:
+            name:
+              - kubectl
+              - helm
+            state: present
+            update_cache: yes
 
     - name: Cleanup
       apt:
