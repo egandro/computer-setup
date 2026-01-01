@@ -404,6 +404,7 @@
             mode: '0644'
             force: no
             remote_src: yes
+            backup: yes
 
     - name: Install Dotfiles
       ansible.builtin.shell: |
