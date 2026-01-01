@@ -129,6 +129,7 @@
           - gnupg
           - sudo
           - zsh
+          - locales
         state: present
 
     - name: Install CLI tools
