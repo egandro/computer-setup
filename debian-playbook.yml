@@ -74,7 +74,7 @@
 
     - name: Set fact is_wsl
       ansible.builtin.set_fact:
-        is_wsl: "{{ ansible_kernel is search('(?i)microsoft|wsl') }}"
+        is_wsl: "{{ ansible_facts['kernel'] is search('(?i)microsoft|wsl') }}"
 
     - name: Determine home base directory
       ansible.builtin.set_fact:
