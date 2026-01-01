@@ -18,12 +18,12 @@
     - name: Fail if not running as root
       fail:
         msg: "This playbook must be run as root."
-      when: ansible_user_id != 'root'
+      when: ansible_facts['user_id'] != 'root'
 
     - name: Fail if running on macOS
       ansible.builtin.fail:
         msg: "This playbook is not supported on macOS."
-      when: ansible_system == 'Darwin'
+      when: ansible_facts['system'] == 'Darwin'
 
     - name: Check if device-tree model file exists
       ansible.builtin.stat:
@@ -121,14 +121,22 @@
       block:
         - name: Get latest Go version
           ansible.builtin.uri:
-            url: https://golang.org/VERSION?m=text
+            url: https://go.dev/VERSION?m=text
             return_content: yes
           register: go_version_response
 
         - name: Set Go variables
           ansible.builtin.set_fact:
-            go_version: "{{ go_version_response.content | trim }}"
-            go_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' if ansible_architecture == 'aarch64' else 'armv6l' }}"
+            go_version: "{{ go_version_response.content.splitlines()[0] }}"
+            go_arch: "{{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' if ansible_facts['architecture'] == 'aarch64' else 'armv6l' }}"
+
+        - name: Set Go download URL
+          ansible.builtin.set_fact:
+            go_download_url: "https://go.dev/dl/{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+
+        - name: Debug Go installation details
+          ansible.builtin.debug:
+            msg: "Installing Go version: {{ go_version }} from {{ go_download_url }}"
 
         - name: Check installed Go version
           ansible.builtin.shell: /usr/local/go/bin/go version | awk '{print $3}'
@@ -144,7 +152,7 @@
 
         - name: Download and install Go
           ansible.builtin.unarchive:
-            src: "https://dl.google.com/go/{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+            src: "{{ go_download_url }}"
             dest: /usr/local
             remote_src: yes
             creates: /usr/local/go/bin/go
@@ -176,7 +184,7 @@
             name: dotnet-sdk-10.0
             state: present
             update_cache: yes
-      when: not is_raspberry and ansible_distribution == 'Debian' and ansible_distribution_major_version == '13'
+      when: not is_raspberry and ansible_facts['distribution'] == 'Debian' and ansible_facts['distribution_major_version'] == '13'
 
     - name: Cleanup
       apt:

@@ -46,12 +46,12 @@
     - name: Fail if not running as root
       fail:
         msg: "This playbook must be run as root."
-      when: ansible_user_id != 'root'
+      when: ansible_facts['user_id'] != 'root'
 
     - name: Fail if running on macOS
       ansible.builtin.fail:
         msg: "This playbook is not supported on macOS."
-      when: ansible_system == 'Darwin'
+      when: ansible_facts['system'] == 'Darwin'
 
     - name: Check if device-tree model file exists
       ansible.builtin.stat:
