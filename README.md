@@ -3,46 +3,27 @@
 ## Debian
 
 ### bootstrap
-usage
 
-Debian, Termux
+**usage**
+
 ```bash
 $ wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap.sh | bash
 ```
 
-MacOS
-```bash
-$ curl -s https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap.sh | bash
-```
-
-### System
-usage
-
-```bash
-$ wget https://raw.githubusercontent.com/egandro/computer-setup/main/debian-install.sh && chmod 755 ./debian-install.sh && sudo ./debian-install.sh
-```
-
-### Dev Tools
-usage
-
-```bash
-$ wget https://raw.githubusercontent.com/egandro/computer-setup/main/debian-dev-tools.sh && chmod 755 ./debian-dev-tools.sh && sudo ./debian-dev-tools.sh
-```
-
-
 ### Windows
 
-Chocolaty setup
+**Chocolaty setup**
+
 ```powershell
 # elevated powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 ```
 
-basic system
+**basic system**
 
 ```cmd
 rem elevated cmd.exe
-curl -o windows-install.cmd https://raw.githubusercontent.com/egandro/computer-setup/main/windows-install.cmd
+rem curl -o windows-install.cmd https://raw.githubusercontent.com/egandro/computer-setup/main/windows-install.cmd
 set VS2019_ENT_SERIAL=123123123123123
 windows-install.cmd
 ```
