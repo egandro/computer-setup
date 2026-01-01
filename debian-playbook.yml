@@ -254,7 +254,6 @@
         - name: Dearmor the GPG key (Required for apt)
           ansible.builtin.shell:
             cmd: gpg --dearmor < /etc/apt/keyrings/microsoft.asc > /etc/apt/keyrings/microsoft.gpg
-            creates: /etc/apt/keyrings/microsoft.gpg
           # Note: Newer apt versions can read .asc directly, but .gpg is safest for compatibility.
 
         - name: Create DEB822 .sources file
@@ -341,7 +340,6 @@
         - name: Dearmor Docker GPG key
           ansible.builtin.shell:
             cmd: gpg --dearmor < /etc/apt/keyrings/docker.asc > /etc/apt/keyrings/docker.gpg
-            creates: /etc/apt/keyrings/docker.gpg
 
         - name: Add Docker repository (DEB822 format)
           ansible.builtin.copy:
@@ -452,7 +450,6 @@
         - name: Dearmor Kubernetes GPG key
           ansible.builtin.shell:
             cmd: gpg --dearmor < /etc/apt/keyrings/kubernetes-apt-keyring.asc > /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-            creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
         - name: Add Kubernetes repository (DEB822)
           ansible.builtin.copy:
@@ -482,15 +479,14 @@
         - name: Dearmor Helm GPG key
           ansible.builtin.shell:
             cmd: gpg --dearmor < /etc/apt/keyrings/helm.asc > /etc/apt/keyrings/helm.gpg
-            creates: /etc/apt/keyrings/helm.gpg
 
         - name: Add Helm repository (DEB822)
           ansible.builtin.copy:
             dest: /etc/apt/sources.list.d/helm.sources
             content: |
               Types: deb
-              URIs: https://baltocdn.com/helm/stable/debian/
-              Suites: all
+              URIs: https://packages.buildkite.com/helm-linux/helm-debian/any/
+              Suites: any
               Components: main
               Signed-By: /etc/apt/keyrings/helm.gpg
             mode: '0644'
