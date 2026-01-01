@@ -406,7 +406,7 @@
       ansible.builtin.shell: |
         if git clone git@github.com:egandro/dotfiles.git ~/.dotfiles; then
           cd ~/.dotfiles
-          for d in */ ; do stow -R "${d%/}" ; done
+          for d in */ ; do stow --adopt -R "${d%/}" ; done
         else
           echo "we can't checkout"
         fi
