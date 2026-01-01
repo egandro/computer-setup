@@ -15,7 +15,7 @@
 #    apt-get update && apt-get install -y ansible curl sudo
 #
 # 3. Download and run this playbook:
-#    curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/refs/heads/update-to-ansible/debian-playbook.yml -o debian-playbook.yml
+#    curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/main/debian-playbook.yml -o debian-playbook.yml
 #    ansible-playbook debian-playbook.yml
 
 - hosts: localhost
@@ -120,19 +120,19 @@
     - name: Install basic dependencies
       apt:
         name:
-          - wget
-          - curl
-          - gpg
+          - apt-transport-https
           - build-essential
+          - ca-certificates
+          - curl
           - dkms
+          - gnupg
+          - gpg
+          - locales
           - mc
           - p7zip-full
-          - apt-transport-https
-          - ca-certificates
-          - gnupg
           - sudo
+          - wget
           - zsh
-          - locales
         state: present
 
     - name: Install CLI tools
@@ -140,6 +140,7 @@
         name:
           - autojump
           - bash-completion
+          - btop
           - dnsutils
           - exfat-fuse
           - fzf
