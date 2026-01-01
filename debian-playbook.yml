@@ -25,7 +25,9 @@
     target_user: "{{ ansible_env.SUDO_USER | default('harald') }}"
     target_user_default: 'harald'
     local_default: C.UTF-8
-    locales_list:
+    locales_minimal:
+      - en_US.UTF-8 UTF-8
+    locales_full:
       - en_DK ISO-8859-1
       - en_DK.ISO-8859-15 ISO-8859-15
       - en_DK.UTF-8 UTF-8
@@ -427,13 +429,12 @@
             regexp: "^#? {{ item | regex_escape }}"
             line: "{{ item }}"
             state: present
-          loop: "{{ locales_list }}"
+          loop: "{{ locales_full if (has_gui | bool) else locales_minimal }}"
           register: locale_config
-          when: has_gui
 
         - name: Generate locales
           command: locale-gen
-          when: has_gui and locale_config.changed
+          when: locale_config.changed
 
         - name: Set default locale
           command: update-locale LANG=en_US.UTF-8 LC_TIME=C.UTF-8
