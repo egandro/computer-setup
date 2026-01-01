@@ -1,0 +1,422 @@
+---
+- hosts: localhost
+  gather_facts: true
+  connection: local
+  vars:
+    target_user: "{{ ansible_env.SUDO_USER | default('harald') }}"
+    target_user_default: 'harald'
+    locales_list:
+      - en_DK ISO-8859-1
+      - en_DK.ISO-8859-15 ISO-8859-15
+      - en_DK.UTF-8 UTF-8
+      - de_DE.UTF-8 UTF-8
+      - de_DE ISO-8859-1
+      - de_DE@euro ISO-8859-15
+      - en_US.UTF-8 UTF-8
+      - da_DK ISO-8859-1
+      - da_DK.UTF-8 UTF-8
+    # Map Ansible architecture names to Docker's apt architecture names
+    arch_mapping:
+      x86_64: amd64
+      aarch64: arm64
+      armv7l: armhf
+  tasks:
+    - name: Fail if not running as root
+      fail:
+        msg: "This playbook must be run as root."
+      when: ansible_user_id != 'root'
+
+    - name: Fail if running on macOS
+      ansible.builtin.fail:
+        msg: "This playbook is not supported on macOS."
+      when: ansible_system == 'Darwin'
+
+    - name: Check if device-tree model file exists
+      ansible.builtin.stat:
+        path: /proc/device-tree/model
+      register: device_tree_file
+
+    - name: Read device model
+      ansible.builtin.slurp:
+        src: /proc/device-tree/model
+      register: device_model_encoded
+      when: device_tree_file.stat.exists
+
+    - name: Set fact is_raspberry
+      ansible.builtin.set_fact:
+        is_raspberry: >-
+          {{
+            device_tree_file.stat.exists and
+            'Pi' in (device_model_encoded.content | b64decode)
+          }}
+
+    - name: Set fact is_wsl
+      ansible.builtin.set_fact:
+        is_wsl: "{{ ansible_kernel is search('(?i)microsoft|wsl') }}"
+
+    - name: Determine home base directory
+      ansible.builtin.set_fact:
+        #home_base_dir: "{{ '/Users' if ansible_system == 'Darwin' else '/home' }}"
+        home_base_dir: '/home'
+
+    - name: List users in home directory
+      ansible.builtin.find:
+        paths: "{{ home_base_dir }}"
+        file_type: directory
+        recurse: no
+        excludes: ['Shared', 'lost+found']
+      register: home_dirs
+
+    - name: Set target_user
+      ansible.builtin.set_fact:
+        target_user: >-
+          {{
+              home_dirs.files | map(attribute='path') | map('basename') | list | first
+              if (home_dirs is defined and home_dirs.matched == 1)
+              else target_user_default
+          }}
+
+    - name: Set target_user_home
+      ansible.builtin.set_fact:
+        target_user_home: "{{ home_base_dir }}/{{ target_user }}"
+
+    - name: Ensure target_user exists
+      ansible.builtin.user:
+        name: "{{ target_user }}"
+        shell: /bin/bash
+        create_home: yes
+        state: present
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        cache_valid_time: 3600
+
+    - name: Install basic dependencies
+      apt:
+        name:
+          - wget
+          - curl
+          - gpg
+          - build-essential
+          - dkms
+          - mc
+          - p7zip-full
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+          - software-properties-common
+          - sudo
+          - zsh
+        state: present
+
+    - name: Install linux headers (non-Pi)
+      apt:
+        name: "linux-headers-{{ ansible_kernel }}"
+        state: present
+      when: not is_raspberry
+
+    - name: Set zsh as default shell
+      ansible.builtin.user:
+        name: "{{ target_user }}"
+        shell: /bin/zsh
+
+    - name: Ensure user is in sudo group
+      user:
+        name: "{{ target_user }}"
+        groups: sudo
+        append: yes
+
+    # - name: Install Virtualization Guest Tools
+    #   apt:
+    #     name:
+    #       - open-vm-tools
+    #       - qemu-guest-agent
+    #     state: present
+
+    - name: Get latest Node.js LTS version
+      ansible.builtin.shell: |
+        curl -s https://nodejs.org/dist/index.json | {{ ansible_playbook_python }} -c "import sys, json; print([v['version'] for v in json.load(sys.stdin) if v['lts']][0])"
+      register: node_lts_version_output
+      changed_when: false
+
+    - name: Set node_lts_major fact
+      ansible.builtin.set_fact:
+        node_lts_major: "{{ node_lts_version_output.stdout | regex_replace('^v(\\d+)\\..*', '\\1') }}"
+
+    - name: Remove current Node.js
+      apt:
+        name:
+          - nodejs
+          - yarn
+        state: absent
+
+    - name: Add NodeSource repo
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_{{ node_lts_major }}.x | bash -
+
+    - name: Install Node.js
+      apt:
+        name:
+          - nodejs
+          - yarn
+        state: present
+
+    - name: Gather installed packages
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Check for Xorg or Wayland
+      ansible.builtin.set_fact:
+        has_gui: >-
+          {{
+            'xserver-xorg' in ansible_facts.packages or
+            'xwayland' in ansible_facts.packages or
+            'gnome-shell' in ansible_facts.packages
+          }}
+
+    - name: Install VS Code
+      block:
+        - name: Ensure keyrings directory exists
+          ansible.builtin.file:
+            path: /etc/apt/keyrings
+            state: directory
+            mode: '0755'
+
+        - name: Download Microsoft GPG key
+          ansible.builtin.get_url:
+            url: https://packages.microsoft.com/keys/microsoft.asc
+            dest: /etc/apt/keyrings/microsoft.asc
+            mode: '0644'
+            force: true
+
+        - name: Dearmor the GPG key (Required for apt)
+          ansible.builtin.shell:
+            cmd: gpg --dearmor < /etc/apt/keyrings/microsoft.asc > /etc/apt/keyrings/microsoft.gpg
+            creates: /etc/apt/keyrings/microsoft.gpg
+          # Note: Newer apt versions can read .asc directly, but .gpg is safest for compatibility.
+
+        - name: Create DEB822 .sources file
+          ansible.builtin.copy:
+            dest: /etc/apt/sources.list.d/vscode.sources
+            content: |
+              Types: deb
+              URIs: https://packages.microsoft.com/repos/code
+              Suites: stable
+              Components: main
+              Architectures: amd64 arm64 armhf
+              Signed-By: /etc/apt/keyrings/microsoft.gpg
+            mode: '0644'
+
+        - name: Install VS Code
+          ansible.builtin.apt:
+            name: code
+            state: latest
+            update_cache: yes
+      when: has_gui and not is_raspberry
+
+    - name: Install Brave Browser
+      block:
+        - name: Download Brave GPG key
+          ansible.builtin.get_url:
+            url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+            dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+            mode: '0644'
+            force: true
+
+        - name: Add Brave repository (DEB822 format)
+          ansible.builtin.copy:
+            dest: /etc/apt/sources.list.d/brave-browser-release.sources
+            content: |
+              Types: deb
+              URIs: https://brave-browser-apt-release.s3.brave.com/
+              Suites: stable
+              Components: main
+              Signed-By: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+            mode: '0644'
+
+        - name: Install Brave Browser package
+          ansible.builtin.apt:
+            name: brave-browser
+            state: latest
+            update_cache: yes
+      when: has_gui and not is_raspberry
+
+    - name: Setup Docker
+      block:
+        - name: Remove old/conflicting Docker packages
+          ansible.builtin.apt:
+            name:
+              - docker.io
+              - docker-doc
+              - docker-compose
+              - podman-docker
+              - containerd
+              - runc
+            state: absent
+
+        - name: Install dependencies
+          ansible.builtin.apt:
+            name:
+              - ca-certificates
+              - curl
+              - gnupg
+            state: present
+            update_cache: yes
+
+        - name: Create keyrings directory
+          ansible.builtin.file:
+            path: /etc/apt/keyrings
+            state: directory
+            mode: '0755'
+
+        - name: Download Docker GPG key
+          ansible.builtin.get_url:
+            url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+            dest: /etc/apt/keyrings/docker.asc
+            mode: '0644'
+            force: true
+
+        - name: Dearmor Docker GPG key
+          ansible.builtin.shell:
+            cmd: gpg --dearmor < /etc/apt/keyrings/docker.asc > /etc/apt/keyrings/docker.gpg
+            creates: /etc/apt/keyrings/docker.gpg
+
+        - name: Add Docker repository (DEB822 format)
+          ansible.builtin.copy:
+            dest: /etc/apt/sources.list.d/docker.sources
+            content: |
+              Types: deb
+              URIs: https://download.docker.com/linux/{{ ansible_distribution | lower }}
+              Suites: {{ ansible_distribution_release }}
+              Components: stable
+              Architectures: {{ arch_mapping[ansible_architecture] }}
+              Signed-By: /etc/apt/keyrings/docker.gpg
+            mode: '0644'
+
+        - name: Install Docker packages
+          ansible.builtin.apt:
+            name:
+              - docker-ce
+              - docker-ce-cli
+              - containerd.io
+              - docker-buildx-plugin
+              - docker-compose-plugin
+            state: latest
+            update_cache: yes
+
+        - name: Add user to docker group
+          ansible.builtin.user:
+            name: "{{ target_user }}"
+            groups: docker
+            append: yes
+
+    - name: Install CLI tools
+      apt:
+        name:
+          - autojump
+          - bash-completion
+          - dnsutils
+          - exfat-fuse
+          - exfat-utils
+          - fzf
+          - git
+          - htop
+          - jq
+          - net-tools
+          - psmisc
+          - python-is-python3
+          - python3-pip
+          - stow
+          - subversion
+          - tmux
+          - unzip
+          - vim
+          - xsel
+          - zip
+          - zoxide
+          - zsh
+        state: present
+
+    - name: Install Oh My Zsh
+      shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+      become_user: "{{ target_user }}"
+      args:
+        creates: "{{ target_user_home }}/.oh-my-zsh"
+
+    - name: Install Dotfiles
+      ansible.builtin.shell: |
+        if git clone git@github.com:egandro/dotfiles.git ~/.dotfiles; then
+          cd ~/.dotfiles
+          for d in */ ; do stow -R "${d%/}" ; done
+        else
+          echo "we can't checkout"
+        fi
+      become_user: "{{ target_user }}"
+      args:
+        executable: /bin/bash
+        creates: "{{ target_user_home }}/.dotfiles"
+
+    - name: Configure Vim
+      block:
+        - name: Set default editor
+          ansible.builtin.blockinfile:
+            path: "{{ target_user_home }}/.bashrc"
+            block: |
+              export EDITOR=vim
+        - name: Set default system editor to vim
+          ansible.builtin.command: update-alternatives --set editor /usr/bin/vim.basic
+          changed_when: false
+        - name: Fix vim mouse
+          ansible.builtin.copy:
+            dest: /etc/vim/vimrc.local
+            force: no
+            mode: '0644'
+            content: |
+              augroup system_mouse_override
+                autocmd!
+                autocmd VimEnter * set mouse=r
+                autocmd VimEnter * set background=dark
+              augroup END
+
+    - name: Configure Locales
+      block:
+        - name: Enable locales
+          lineinfile:
+            path: /etc/locale.gen
+            regexp: "^#? {{ item | regex_escape }}"
+            line: "{{ item }}"
+            state: present
+          loop: "{{ locales_list }}"
+          register: locale_config
+
+        - name: Generate locales
+          command: locale-gen
+          when: locale_config.changed
+
+        - name: Set default locale
+          command: localectl set-locale LANG=en_US.UTF-8 LC_TIME=C.UTF-8
+          changed_when: false
+
+    # - name: Setup Kubernetes and Helm
+    #   block:
+    #     - name: Install kubectl
+    #       shell: |
+    #         curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    #         echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' > /etc/apt/sources.list.d/kubernetes.list
+    #         apt-get update && apt-get install -y kubectl
+    #       args:
+    #         creates: /usr/bin/kubectl
+
+    #     - name: Install Helm
+    #       shell: |
+    #         curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+    #         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" > /etc/apt/sources.list.d/helm-stable-debian.list
+    #         apt-get update && apt-get install -y helm
+    #       args:
+    #         creates: /usr/sbin/helm
+
+    - name: Cleanup
+      apt:
+        autoremove: yes
