@@ -103,6 +103,7 @@
         name: "{{ target_user }}"
         shell: /bin/bash
         create_home: yes
+        skeleton: /etc/skel
         state: present
       register: target_user_info
 
