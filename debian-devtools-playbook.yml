@@ -1,0 +1,183 @@
+---
+###################################
+# curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/main/debian-devtools-playbook.yml -o debian-devtools-playbook.yml
+# ansible-playbook debian-devtools-playbook.yml
+
+
+- hosts: localhost
+  gather_facts: true
+  connection: local
+  vars:
+    target_user: "{{ ansible_env.SUDO_USER | default('harald') }}"
+    target_user_default: 'harald'
+    arch_mapping:
+      x86_64: amd64
+      aarch64: arm64
+      armv7l: armhf
+  tasks:
+    - name: Fail if not running as root
+      fail:
+        msg: "This playbook must be run as root."
+      when: ansible_user_id != 'root'
+
+    - name: Fail if running on macOS
+      ansible.builtin.fail:
+        msg: "This playbook is not supported on macOS."
+      when: ansible_system == 'Darwin'
+
+    - name: Check if device-tree model file exists
+      ansible.builtin.stat:
+        path: /proc/device-tree/model
+      register: device_tree_file
+
+    - name: Read device model
+      ansible.builtin.slurp:
+        src: /proc/device-tree/model
+      register: device_model_encoded
+      when: device_tree_file.stat.exists
+
+    - name: Set fact is_raspberry
+      ansible.builtin.set_fact:
+        is_raspberry: >-
+          {{
+            device_tree_file.stat.exists and
+            'Pi' in (device_model_encoded.content | b64decode)
+          }}
+
+    - name: Set fact is_wsl
+      ansible.builtin.set_fact:
+        is_wsl: "{{ ansible_kernel is search('(?i)microsoft|wsl') }}"
+
+    - name: Determine home base directory
+      ansible.builtin.set_fact:
+        #home_base_dir: "{{ '/Users' if ansible_system == 'Darwin' else '/home' }}"
+        home_base_dir: '/home'
+
+    - name: List users in home directory
+      ansible.builtin.find:
+        paths: "{{ home_base_dir }}"
+        file_type: directory
+        recurse: no
+        excludes: ['Shared', 'lost+found']
+      register: home_dirs
+
+    - name: Set target_user
+      ansible.builtin.set_fact:
+        target_user: >-
+          {{
+              home_dirs.files | map(attribute='path') | map('basename') | list | first
+              if (home_dirs is defined and home_dirs.matched == 1)
+              else target_user_default
+          }}
+
+    - name: Install development tools
+      ansible.builtin.apt:
+        name:
+          - default-jre
+          - default-jdk
+          - python3-dev
+          - gdb
+          - strace
+          - ltrace
+        state: present
+
+    - name: Gather installed packages
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Check for Xorg or Wayland
+      ansible.builtin.set_fact:
+        has_gui: >-
+          {{
+            'xserver-xorg' in ansible_facts.packages or
+            'xwayland' in ansible_facts.packages or
+            'gnome-shell' in ansible_facts.packages
+          }}
+
+    - name: Install Freelens
+      block:
+        - name: Download Freelens GPG key
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.asc
+            dest: /etc/apt/keyrings/freelens.asc
+            mode: '0644'
+            force: true
+
+        - name: Download Freelens sources
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.sources
+            dest: /etc/apt/sources.list.d/freelens.sources
+            mode: '0644'
+            force: true
+
+        - name: Install Freelens package
+          ansible.builtin.apt:
+            name: freelens
+            state: present
+            update_cache: yes
+      when: has_gui and not is_raspberry
+
+    - name: Install Golang
+      block:
+        - name: Get latest Go version
+          ansible.builtin.uri:
+            url: https://golang.org/VERSION?m=text
+            return_content: yes
+          register: go_version_response
+
+        - name: Set Go variables
+          ansible.builtin.set_fact:
+            go_version: "{{ go_version_response.content | trim }}"
+            go_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' if ansible_architecture == 'aarch64' else 'armv6l' }}"
+
+        - name: Check installed Go version
+          ansible.builtin.shell: /usr/local/go/bin/go version | awk '{print $3}'
+          register: installed_go_version
+          failed_when: false
+          changed_when: false
+
+        - name: Remove old Go installation
+          ansible.builtin.file:
+            path: /usr/local/go
+            state: absent
+          when: installed_go_version.rc != 0 or installed_go_version.stdout != go_version
+
+        - name: Download and install Go
+          ansible.builtin.unarchive:
+            src: "https://dl.google.com/go/{{ go_version }}.linux-{{ go_arch }}.tar.gz"
+            dest: /usr/local
+            remote_src: yes
+            creates: /usr/local/go/bin/go
+
+        - name: Setup Go environment variables
+          ansible.builtin.copy:
+            dest: /etc/profile.d/go-env.sh
+            content: |
+              export PATH=$PATH:/usr/local/go/bin
+              export GOPATH=$HOME/.golib
+              export PATH=$PATH:$GOPATH/bin
+              export GOPATH=$GOPATH:$HOME/projects/go
+            mode: '0644'
+
+    - name: Install Dotnet
+      block:
+        - name: Download Microsoft repository package
+          ansible.builtin.get_url:
+            url: https://packages.microsoft.com/config/debian/13/packages-microsoft-prod.deb
+            dest: /tmp/packages-microsoft-prod.deb
+            mode: '0644'
+
+        - name: Install Microsoft repository
+          ansible.builtin.apt:
+            deb: /tmp/packages-microsoft-prod.deb
+
+        - name: Install Dotnet SDK
+          ansible.builtin.apt:
+            name: dotnet-sdk-10.0
+            state: present
+            update_cache: yes
+      when: not is_raspberry and ansible_distribution == 'Debian' and ansible_distribution_major_version == '13'
+
+    - name: Cleanup
+      apt:
+        autoremove: yes
