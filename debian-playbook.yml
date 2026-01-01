@@ -372,18 +372,38 @@
             append: yes
 
 
-    - name: Install Oh My Zsh
-      ansible.builtin.shell: |
-        if [ -d "$ZSH" ]; then
-          echo "Oh My Zsh is already installed at $ZSH"
-          exit 0
-        fi
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-      become_user: "{{ target_user }}"
-      environment:
-        ZSH: "{{ target_user_home }}/.oh-my-zsh"
-      args:
-        creates: "{{ target_user_home }}/.oh-my-zsh"
+    - name: Setup Oh My Zsh
+      block:
+        - name: Install Oh My Zsh
+          ansible.builtin.shell: |
+            if [ -d "$ZSH" ]; then
+              echo "Oh My Zsh is already installed at $ZSH"
+              exit 0
+            fi
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+          become_user: "{{ target_user }}"
+          environment:
+            ZSH: "{{ target_user_home }}/.oh-my-zsh"
+            HOME: "{{ target_user_home }}"
+          args:
+            creates: "{{ target_user_home }}/.oh-my-zsh"
+
+        - name: Fix permissions of Oh My Zsh
+          ansible.builtin.file:
+            path: "{{ target_user_home }}/.oh-my-zsh"
+            owner: "{{ target_user }}"
+            group: "{{ target_user }}"
+            recurse: yes
+
+        - name: Ensure .zshrc exists
+          ansible.builtin.copy:
+            src: "{{ target_user_home }}/.oh-my-zsh/templates/zshrc.zsh-template"
+            dest: "{{ target_user_home }}/.zshrc"
+            owner: "{{ target_user }}"
+            group: "{{ target_user }}"
+            mode: '0644'
+            force: no
+            remote_src: yes
 
     - name: Install Dotfiles
       ansible.builtin.shell: |
@@ -394,6 +414,8 @@
           echo "we can't checkout"
         fi
       become_user: "{{ target_user }}"
+      environment:
+        HOME: "{{ target_user_home }}"
       args:
         executable: /bin/bash
         creates: "{{ target_user_home }}/.dotfiles"
