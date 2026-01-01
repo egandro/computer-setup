@@ -130,6 +130,31 @@
           - zsh
         state: present
 
+    - name: Install CLI tools
+      apt:
+        name:
+          - autojump
+          - bash-completion
+          - dnsutils
+          - exfat-fuse
+          - fzf
+          - git
+          - htop
+          - jq
+          - net-tools
+          - psmisc
+          - python-is-python3
+          - python3-pip
+          - stow
+          - subversion
+          - tmux
+          - unzip
+          - vim
+          - xsel
+          - zip
+          - zoxide
+        state: present
+
     # - name: Install linux headers (non-Pi)
     #   apt:
     #     name: "linux-headers-{{ ansible_kernel }}"
@@ -343,31 +368,6 @@
             groups: docker
             append: yes
 
-    - name: Install CLI tools
-      apt:
-        name:
-          - autojump
-          - bash-completion
-          - dnsutils
-          - exfat-fuse
-          - fzf
-          - git
-          - htop
-          - jq
-          - net-tools
-          - psmisc
-          - python-is-python3
-          - python3-pip
-          - stow
-          - subversion
-          - tmux
-          - unzip
-          - vim
-          - xsel
-          - zip
-          - zoxide
-          - zsh
-        state: present
 
     - name: Install Oh My Zsh
       shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -427,7 +427,7 @@
           when: has_gui and locale_config.changed
 
         - name: Set default locale
-          command: localectl set-locale LANG=en_US.UTF-8 LC_TIME=C.UTF-8
+          command: update-locale LANG=en_US.UTF-8 LC_TIME=C.UTF-8
           changed_when: false
 
     - name: Setup Kubernetes and Helm
