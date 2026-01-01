@@ -96,16 +96,17 @@
               else target_user_default
           }}
 
-    - name: Set target_user_home
-      ansible.builtin.set_fact:
-        target_user_home: "{{ home_base_dir }}/{{ target_user }}"
-
     - name: Ensure target_user exists
       ansible.builtin.user:
         name: "{{ target_user }}"
         shell: /bin/bash
         create_home: yes
         state: present
+      register: target_user_info
+
+    - name: Set target_user_home
+      ansible.builtin.set_fact:
+        target_user_home: "{{ target_user_info.home }}"
 
     - name: Update and upgrade apt packages
       apt:
@@ -372,6 +373,8 @@
     - name: Install Oh My Zsh
       shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
       become_user: "{{ target_user }}"
+      environment:
+        ZSH: "{{ target_user_home }}/.oh-my-zsh"
       args:
         creates: "{{ target_user_home }}/.oh-my-zsh"
 
