@@ -9,6 +9,7 @@
 #
 # 1. Start a fresh container (example):
 #    docker run -it --rm debian:trixie-slim /bin/bash
+#    docker run -it --rm debian:trixie /bin/bash
 #
 # 2. Install prerequisites (Ansible, Curl, Sudo):
 #    apt-get update && apt-get install -y ansible curl sudo
@@ -129,11 +130,11 @@
           - zsh
         state: present
 
-    - name: Install linux headers (non-Pi)
-      apt:
-        name: "linux-headers-{{ ansible_kernel }}"
-        state: present
-      when: not is_raspberry
+    # - name: Install linux headers (non-Pi)
+    #   apt:
+    #     name: "linux-headers-{{ ansible_kernel }}"
+    #     state: present
+    #   when: not is_raspberry
 
     - name: Set zsh as default shell
       ansible.builtin.user:
