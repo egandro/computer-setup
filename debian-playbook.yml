@@ -517,6 +517,13 @@
             state: present
             update_cache: yes
 
+    - name: Install yt-dlp
+      ansible.builtin.get_url:
+        url: https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp
+        dest: /usr/local/bin/yt-dlp
+        mode: '0755'
+        force: true
+
     - name: Cleanup
       apt:
         autoremove: yes
