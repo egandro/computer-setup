@@ -165,7 +165,7 @@
       apt:
         name: "linux-headers-{{ ansible_kernel }}"
         state: present
-      when: not is_raspberry
+      when: not is_raspberry and not is_wsl
 
     - name: Set zsh as default shell
       ansible.builtin.user:
