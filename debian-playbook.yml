@@ -1,10 +1,29 @@
 ---
+
+## Background
+# This playbook sets up a development environment on Debian-based systems (localhost).
+# It configures users, installs CLI tools (zsh, tmux, git), Docker, VS Code (if GUI),
+# and manages dotfiles. It is designed to be idempotent and run as root.
+#
+## Bootstrap / Testing Instructions
+#
+# 1. Start a fresh container (example):
+#    docker run -it --rm debian:trixie-slim /bin/bash
+#
+# 2. Install prerequisites (Ansible, Curl, Sudo):
+#    apt-get update && apt-get install -y ansible curl sudo
+#
+# 3. Download and run this playbook:
+#    curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/refs/heads/update-to-ansible/debian-playbook.yml -o debian-playbook.yml
+#    ansible-playbook debian-playbook.yml
+
 - hosts: localhost
   gather_facts: true
   connection: local
   vars:
     target_user: "{{ ansible_env.SUDO_USER | default('harald') }}"
     target_user_default: 'harald'
+    local_default: C.UTF-8
     locales_list:
       - en_DK ISO-8859-1
       - en_DK.ISO-8859-15 ISO-8859-15
@@ -390,10 +409,11 @@
             state: present
           loop: "{{ locales_list }}"
           register: locale_config
+          when: has_gui
 
         - name: Generate locales
           command: locale-gen
-          when: locale_config.changed
+          when: has_gui and locale_config.changed
 
         - name: Set default locale
           command: localectl set-locale LANG=en_US.UTF-8 LC_TIME=C.UTF-8
