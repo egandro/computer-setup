@@ -1,0 +1,118 @@
+---
+###################################
+# curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/main/debian-devtools-playbook.yml -o debian-desktop-playbook.yml
+# ansible-playbook debian-desktop-playbook.yml
+
+
+- hosts: localhost
+  gather_facts: true
+  connection: local
+  vars:
+    target_user: "{{ ansible_env.SUDO_USER | default('harald') }}"
+    target_user_default: 'harald'
+    arch_mapping:
+      x86_64: amd64
+      aarch64: arm64
+      armv7l: armhf
+  tasks:
+    - name: Fail if not running as root
+      fail:
+        msg: "This playbook must be run as root."
+      when: ansible_facts['user_id'] != 'root'
+
+    - name: Fail if running on macOS
+      ansible.builtin.fail:
+        msg: "This playbook is not supported on macOS."
+      when: ansible_facts['system'] == 'Darwin'
+
+    - name: Check if device-tree model file exists
+      ansible.builtin.stat:
+        path: /proc/device-tree/model
+      register: device_tree_file
+
+    - name: Read device model
+      ansible.builtin.slurp:
+        src: /proc/device-tree/model
+      register: device_model_encoded
+      when: device_tree_file.stat.exists
+
+    - name: Set fact is_raspberry
+      ansible.builtin.set_fact:
+        is_raspberry: >-
+          {{
+            device_tree_file.stat.exists and
+            'Pi' in (device_model_encoded.content | b64decode)
+          }}
+
+    - name: Set fact is_wsl
+      ansible.builtin.set_fact:
+        is_wsl: "{{ ansible_facts['kernel'] is search('(?i)microsoft|wsl') }}"
+
+    - name: Determine home base directory
+      ansible.builtin.set_fact:
+        #home_base_dir: "{{ '/Users' if ansible_system == 'Darwin' else '/home' }}"
+        home_base_dir: '/home'
+
+    - name: List users in home directory
+      ansible.builtin.find:
+        paths: "{{ home_base_dir }}"
+        file_type: directory
+        recurse: no
+        excludes: ['Shared', 'lost+found']
+      register: home_dirs
+
+    - name: Set target_user
+      ansible.builtin.set_fact:
+        target_user: >-
+          {{
+              home_dirs.files | map(attribute='path') | map('basename') | list | first
+              if (home_dirs is defined and home_dirs.matched == 1)
+              else target_user_default
+          }}
+
+    - name: Gather installed packages
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Check for Xorg or Wayland
+      ansible.builtin.set_fact:
+        has_gui: >-
+          {{
+            'xserver-xorg' in ansible_facts.packages or
+            'xwayland' in ansible_facts.packages or
+            'gnome-shell' in ansible_facts.packages
+          }}
+
+    - name: Install LocalSend
+      block:
+        - name: Get latest LocalSend release info
+          ansible.builtin.uri:
+            url: https://api.github.com/repos/localsend/localsend/releases/latest
+            return_content: yes
+          register: localsend_release
+
+        - name: Set LocalSend version and arch
+          ansible.builtin.set_fact:
+            localsend_version: "{{ localsend_release.json.tag_name | regex_replace('^v', '') }}"
+            localsend_arch: "{{ 'x86-64' if ansible_facts['architecture'] == 'x86_64' else 'arm-64' if ansible_facts['architecture'] == 'aarch64' else 'unsupported' }}"
+
+        - name: Fail if architecture is unsupported
+          ansible.builtin.fail:
+            msg: "Architecture {{ ansible_facts['architecture'] }} is not supported for LocalSend."
+          when: localsend_arch == 'unsupported'
+
+        - name: Download LocalSend .deb
+          ansible.builtin.get_url:
+            url: "https://github.com/localsend/localsend/releases/download/v{{ localsend_version }}/LocalSend-{{ localsend_version }}-linux-{{ localsend_arch }}.deb"
+            dest: "/tmp/LocalSend-{{ localsend_version }}.deb"
+            mode: '0644'
+
+        - name: Install LocalSend
+          ansible.builtin.apt:
+            deb: "/tmp/LocalSend-{{ localsend_version }}.deb"
+            state: present
+      when: not is_raspberry and has_gui
+
+    - name: Cleanup
+      apt:
+        autoremove: yes
