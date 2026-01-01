@@ -440,14 +440,8 @@
           command: update-locale LANG=en_US.UTF-8 LC_TIME=C.UTF-8
           changed_when: false
 
-    - name: Setup Kubernetes and Helm
+    - name: Setup Kubernetes
       block:
-        - name: Ensure keyrings directory exists
-          ansible.builtin.file:
-            path: /etc/apt/keyrings
-            state: directory
-            mode: '0755'
-
         - name: Download Kubernetes GPG key
           ansible.builtin.get_url:
             url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
@@ -470,17 +464,25 @@
               Signed-By: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
             mode: '0644'
 
+        - name: Install kubectl
+          ansible.builtin.apt:
+            name: kubectl
+            state: present
+            update_cache: yes
+
+    - name: Setup Helm
+      block:
         - name: Download Helm GPG key
           ansible.builtin.get_url:
             url: https://baltocdn.com/helm/signing.asc
-            dest: /usr/share/keyrings/helm.asc
+            dest: /etc/apt/keyrings/helm.asc
             mode: '0644'
             force: true
 
         - name: Dearmor Helm GPG key
           ansible.builtin.shell:
-            cmd: gpg --dearmor < /usr/share/keyrings/helm.asc > /usr/share/keyrings/helm.gpg
-            creates: /usr/share/keyrings/helm.gpg
+            cmd: gpg --dearmor < /etc/apt/keyrings/helm.asc > /etc/apt/keyrings/helm.gpg
+            creates: /etc/apt/keyrings/helm.gpg
 
         - name: Add Helm repository (DEB822)
           ansible.builtin.copy:
@@ -490,14 +492,12 @@
               URIs: https://baltocdn.com/helm/stable/debian/
               Suites: all
               Components: main
-              Signed-By: /usr/share/keyrings/helm.gpg
+              Signed-By: /etc/apt/keyrings/helm.gpg
             mode: '0644'
 
-        - name: Install kubectl and helm
+        - name: Install Helm
           ansible.builtin.apt:
-            name:
-              - kubectl
-              - helm
+            name: helm
             state: present
             update_cache: yes
 
