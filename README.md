@@ -7,7 +7,8 @@
 **usage**
 
 ```bash
-$ wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap.sh | bash
+apt update && apt install wget -y
+wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap.sh | bash
 ```
 
 ### Windows
