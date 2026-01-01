@@ -161,11 +161,11 @@
           - zoxide
         state: present
 
-    # - name: Install linux headers (non-Pi)
-    #   apt:
-    #     name: "linux-headers-{{ ansible_kernel }}"
-    #     state: present
-    #   when: not is_raspberry
+    - name: Install linux headers (non-Pi)
+      apt:
+        name: "linux-headers-{{ ansible_kernel }}"
+        state: present
+      when: not is_raspberry
 
     - name: Set zsh as default shell
       ansible.builtin.user:
