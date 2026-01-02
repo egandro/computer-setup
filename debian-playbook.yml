@@ -72,10 +72,6 @@
             'Pi' in (device_model_encoded.content | b64decode)
           }}
 
-    - name: Set fact is_wsl
-      ansible.builtin.set_fact:
-        is_wsl: "{{ ansible_facts['kernel'] is search('(?i)microsoft|wsl') }}"
-
     - name: Determine home base directory
       ansible.builtin.set_fact:
         #home_base_dir: "{{ '/Users' if ansible_system == 'Darwin' else '/home' }}"
@@ -124,7 +120,6 @@
           - build-essential
           - ca-certificates
           - curl
-          - dkms
           - gnupg
           - gpg
           - locales
@@ -160,12 +155,6 @@
           - zip
           - zoxide
         state: present
-
-    - name: Install linux headers (non-Pi)
-      apt:
-        name: "linux-headers-{{ ansible_facts['kernel'] }}"
-        state: present
-      when: not is_raspberry and not is_wsl
 
     - name: Set zsh as default shell
       ansible.builtin.user:

@@ -1,0 +1,63 @@
+---
+
+#    curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/main/debian-kernel-modules-playbook.yml -o debian-kernel-modules-playbook.yml
+#    ansible-playbook debian-playbook.yml
+
+- hosts: localhost
+  gather_facts: true
+  connection: local
+  tasks:
+    - name: Fail if not running as root
+      fail:
+        msg: "This playbook must be run as root."
+      when: ansible_facts['user_id'] != 'root'
+
+    - name: Fail if running on macOS
+      ansible.builtin.fail:
+        msg: "This playbook is not supported on macOS."
+      when: ansible_facts['system'] == 'Darwin'
+
+    - name: Check if device-tree model file exists
+      ansible.builtin.stat:
+        path: /proc/device-tree/model
+      register: device_tree_file
+
+    - name: Read device model
+      ansible.builtin.slurp:
+        src: /proc/device-tree/model
+      register: device_model_encoded
+      when: device_tree_file.stat.exists
+
+    - name: Set fact is_raspberry
+      ansible.builtin.set_fact:
+        is_raspberry: >-
+          {{
+            device_tree_file.stat.exists and
+            'Pi' in (device_model_encoded.content | b64decode)
+          }}
+
+    - name: Set fact is_wsl
+      ansible.builtin.set_fact:
+        is_wsl: "{{ ansible_facts['kernel'] is search('(?i)microsoft|wsl') }}"
+
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+        cache_valid_time: 3600
+
+    - name: Install basic dependencies
+      apt:
+        name:
+          - dkms
+        state: present
+
+    - name: Install linux headers (non-Pi)
+      apt:
+        name: "linux-headers-{{ ansible_facts['kernel'] }}"
+        state: present
+      when: not is_raspberry and not is_wsl
+
+    - name: Cleanup
+      apt:
+        autoremove: yes
