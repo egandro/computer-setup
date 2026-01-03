@@ -3,9 +3,9 @@ on: [push, workflow_dispatch]
 # on:
 #   push:
 #     paths:
+#       - 'debian-playbook.yml'
 #       - 'debian-devtools-playbook.yml'
 #       - 'debian-dkms-playbook.yml'
-#       - 'debian-playbook.yml'
 #   workflow_dispatch:
 
 jobs:

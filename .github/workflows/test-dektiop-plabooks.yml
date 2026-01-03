@@ -1,8 +1,10 @@
-name: Test Debian DEsktop Playbooks
+name: Test Debian Desktop Playbooks
 on: [push, workflow_dispatch]
 # on:
 #   push:
 #     paths:
+#       - 'debian-playbook.yml'
+#       - 'debian-devtools-playbook.yml'
 #       - 'debian-desktop-playbook.yml'
 #   workflow_dispatch:
 
@@ -15,7 +17,7 @@ jobs:
         run: |
           apt-get update
           apt-get install -y ansible curl sudo
-          apt-get install -y xserver-xwayland
+          apt-get install -y xwayland
 
       - name: Checkout code
         uses: actions/checkout@v4
