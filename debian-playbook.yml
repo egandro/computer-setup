@@ -429,6 +429,7 @@
           git pull || echo "we can't update"
         fi
         cd ~/.dotfiles
+        git pull
         for d in */ ; do stow --adopt -R "${d%/}" ; done
       become_user: "{{ target_user }}"
       environment:
