@@ -5,6 +5,7 @@ on: [push, workflow_dispatch]
 #     paths:
 #       - 'debian-playbook.yml'
 #       - 'debian-devtools-playbook.yml'
+#       - 'debian-dkms-playbook.yml'
 #   workflow_dispatch:
 
 jobs:
@@ -26,6 +27,5 @@ jobs:
       - name: Run Ansible Playbook Devtools
         run: ansible-playbook debian-devtools-playbook.yml
 
-      # We can't test this on azure
-      # - name: Run Ansible Playbook DKMS
-      #   run: ansible-playbook debian-dkms-playbook.yml
+      - name: Run Ansible Playbook DKMS
+        run: ansible-playbook debian-dkms-playbook.yml

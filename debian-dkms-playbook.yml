@@ -52,11 +52,12 @@
           - dkms
         state: present
 
-    - name: Install linux headers (non-Pi)
+    - name: Install linux headers (non-Pi / might not exist on your platform e.g. Azure)
       apt:
         name: "linux-headers-{{ ansible_facts['kernel'] }}"
         state: present
       when: not is_raspberry and not is_wsl
+      ignore_errors: yes
 
     - name: Cleanup
       apt:
