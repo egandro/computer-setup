@@ -6,6 +6,7 @@ on: [push, workflow_dispatch]
 #       - 'debian-playbook.yml'
 #       - 'debian-devtools-playbook.yml'
 #       - 'debian-desktop-playbook.yml'
+#       - '.github/workflows/test-desktop-playbooks.yml'
 #   workflow_dispatch:
 
 jobs:
@@ -33,3 +34,6 @@ jobs:
 
       - name: Run Ansible Playbook DKMS
         run: ansible-playbook debian-dkms-playbook.yml
+
+      - name: Show installed packages
+        run: dpkg-query -f '${binary:Package}\n' -W
