@@ -1,0 +1,31 @@
+name: Test Debian Core Playbooks
+on: [push, workflow_dispatch]
+# on:
+#   push:
+#     paths:
+#       - 'debian-devtools-playbook.yml'
+#       - 'debian-dkms-playbook.yml'
+#       - 'debian-playbook.yml'
+#   workflow_dispatch:
+
+jobs:
+  test-debian-playbook:
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - name: Install prerequisites
+        run: |
+          apt-get update
+          apt-get install -y ansible curl sudo
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Ansible Playbook
+        run: ansible-playbook debian-playbook.yml
+
+      - name: Run Ansible Playbook Devtools
+        run: ansible-playbook debian-devtools-playbook.yml
+
+      - name: Run Ansible Playbook DKMS
+        run: ansible-playbook debian-dkms-playbook.yml

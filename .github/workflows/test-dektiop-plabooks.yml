@@ -1,0 +1,33 @@
+name: Test Debian DEsktop Playbooks
+on: [push, workflow_dispatch]
+# on:
+#   push:
+#     paths:
+#       - 'debian-desktop-playbook.yml'
+#   workflow_dispatch:
+
+jobs:
+  test-debian-playbook-ui:
+    runs-on: ubuntu-latest
+    container: debian:trixie
+    steps:
+      - name: Install prerequisites (including xwayland)
+        run: |
+          apt-get update
+          apt-get install -y ansible curl sudo
+          apt-get install -y xserver-xwayland
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Ansible Playbook
+        run: ansible-playbook debian-playbook.yml
+
+      - name: Run Ansible Playbook Desktop
+        run: ansible-playbook debian-desktop-playbook.yml
+
+      - name: Run Ansible Playbook Devtools
+        run: ansible-playbook debian-devtools-playbook.yml
+
+      - name: Run Ansible Playbook DKMS
+        run: ansible-playbook debian-dkms-playbook.yml

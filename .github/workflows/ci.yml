@@ -1,9 +1,0 @@
-name: Test Debian Scripts
-on: [push, workflow_dispatch]
-
-jobs:
-  test-debian-scripts:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Say Hello
-        run: echo "Hello World!"
