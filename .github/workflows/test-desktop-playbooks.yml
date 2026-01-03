@@ -1,13 +1,16 @@
 name: Test Debian Desktop Playbooks
-on: [push, workflow_dispatch]
-# on:
-#   push:
-#     paths:
-#       - 'debian-playbook.yml'
-#       - 'debian-devtools-playbook.yml'
-#       - 'debian-desktop-playbook.yml'
-#       - '.github/workflows/test-desktop-playbooks.yml'
-#   workflow_dispatch:
+#on: [push]
+on:
+  push:
+    branches: [ "main" ]
+    paths: &core_paths
+      - 'debian-playbook.yml'
+      - 'debian-devtools-playbook.yml'
+      - 'debian-desktop-playbook.yml'
+      - '.github/workflows/test-desktop-playbooks.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths: *core_paths
 
 jobs:
   test-debian-playbook-ui:

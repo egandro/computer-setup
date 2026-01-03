@@ -1,13 +1,16 @@
 name: Test Debian Core Playbooks
-#on: [push, workflow_dispatch]
+#on: [push]
 on:
   push:
-    paths:
+    branches: [ "main" ]
+    paths: &core_paths
       - 'debian-playbook.yml'
       - 'debian-devtools-playbook.yml'
       - 'debian-dkms-playbook.yml'
       - '.github/workflows/test-core-playbooks.yml'
-  workflow_dispatch:
+  pull_request:
+    branches: [ "main" ]
+    paths: *core_paths
 
 jobs:
   test-debian-playbook:
