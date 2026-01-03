@@ -1,7 +1,7 @@
 ---
 
-#    curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/main/debian-kernel-modules-playbook.yml -o debian-kernel-modules-playbook.yml
-#    ansible-playbook debian-playbook.yml
+#    curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/refs/heads/main/debian-dkms-playbook.yml -o debian-dkms-playbook.yml
+#    ansible-playbook debian-dkms-playbook.yml
 
 - hosts: localhost
   gather_facts: true
