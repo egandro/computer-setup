@@ -8,15 +8,19 @@
 ## Bootstrap / Testing Instructions
 #
 # 1. Start a fresh container (example):
-#    docker run -it --rm debian:trixie-slim /bin/bash
-#    docker run -it --rm debian:trixie /bin/bash
+#    docker run -it --rm -v ./:/local debian:trixie-slim /bin/bash
+#    docker run -it --rm -v ./:/local debian:trixie /bin/bash
 #
 # 2. Install prerequisites (Ansible, Curl, Sudo):
 #    apt-get update && apt-get install -y ansible curl sudo
 #
-# 3. Download and run this playbook:
+# 3. Optional download and run this playbook:
 #    curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/main/debian-playbook.yml -o debian-playbook.yml
-#    ansible-playbook debian-playbook.yml
+#
+# 4. Run
+#       ansible-playbook debian-playbook.yml
+#       or
+#       ansible-playbook /local/debian-playbook.yml
 
 - hosts: localhost
   gather_facts: true
