@@ -1,2 +1,0 @@
-# Builder node go image
-
