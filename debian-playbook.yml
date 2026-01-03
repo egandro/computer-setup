@@ -156,6 +156,27 @@
           - zoxide
         state: present
 
+    - name: Configure /etc/tmux.conf
+      ansible.builtin.blockinfile:
+        path: /etc/tmux.conf
+        create: yes
+        mode: '0644'
+        block: |
+          # random escape sequence fix for windows terminal
+          set -sg escape-time 200
+
+    - name: Fix vim mouse
+      ansible.builtin.blockinfile:
+        path: /etc/vim/vimrc.local
+        create: yes
+        mode: '0644'
+        block: |
+          augroup system_mouse_override
+            autocmd!
+            autocmd VimEnter * set mouse=r
+            autocmd VimEnter * set background=dark
+          augroup END
+
     - name: Set zsh as default shell
       ansible.builtin.user:
         name: "{{ target_user }}"
@@ -420,17 +441,6 @@
         - name: Set default system editor to vim
           ansible.builtin.command: update-alternatives --set editor /usr/bin/vim.basic
           changed_when: false
-        - name: Fix vim mouse
-          ansible.builtin.copy:
-            dest: /etc/vim/vimrc.local
-            force: no
-            mode: '0644'
-            content: |
-              augroup system_mouse_override
-                autocmd!
-                autocmd VimEnter * set mouse=r
-                autocmd VimEnter * set background=dark
-              augroup END
 
     - name: Configure Locales
       block:
