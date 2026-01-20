@@ -417,6 +417,18 @@
             owner: "{{ target_user_info.uid }}"
             group: "{{ target_user_info.group }}"
 
+    - name: Check if .ssh directory exists
+      ansible.builtin.stat:
+        path: "{{ target_user_home }}/.ssh"
+      register: ssh_dir
+
+    - name: Check for SSH keys
+      ansible.builtin.find:
+        paths: "{{ target_user_home }}/.ssh"
+        patterns: "*.pub"
+      register: ssh_keys_found
+      when: ssh_dir.stat.exists
+
     - name: Install or Update Dotfiles
       ansible.builtin.shell: |
         if [ ! -d ~/.dotfiles ]; then
@@ -436,6 +448,7 @@
         HOME: "{{ target_user_home }}"
       args:
         executable: /bin/bash
+      when: ssh_dir.stat.exists and ssh_keys_found.matched | default(0) > 0
 
     - name: Configure Vim
       block:
