@@ -190,6 +190,30 @@ if (Test-Path $UserSSH) {
 Start-Service ssh-agent
 Start-Service sshd
 ---
+# ssh dir fix
+# 1. Define Path and User dynamically
+$SSHDir = "$env:USERPROFILE\.ssh"
+$User   = $env:USERNAME
+
+Write-Host "Fixing SSH folder: $SSHDir"
+Write-Host "Target User:       $User" -ForegroundColor Cyan
+
+if (Test-Path $SSHDir) {
+    # 2. Take Ownership of everything (Breaks any 'Access Denied' locks from OS)
+    # /F = File/Folder, /R = Recursive, /D Y = Confirm defaults
+    takeown /F $SSHDir /R /D Y
+
+    # 3. Nuke Permissions & Secure it
+    # /T = Recursive (Apply to all keys inside)
+    # /inheritance:r = Remove ALL inherited permissions (Fixes 'Too Open' error)
+    # /grant ... = Add specific Full Control for YOU and SYSTEM
+    icacls $SSHDir /T /inheritance:r /grant "SYSTEM:F" /grant "$($User):F"
+
+    Write-Host "Done. Permissions fixed." -ForegroundColor Green
+} else {
+    Write-Error "Folder $SSHDir does not exist."
+}
+---
 # uninstall
 # 1. Stop Services
 Stop-Service sshd -ErrorAction SilentlyContinue
