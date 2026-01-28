@@ -67,7 +67,7 @@ choco install -y pencil
 
 choco install -y nordvpn
 
-choco install -y vnc-viewer
+rem download tigervnc from here - https://sourceforge.net/projects/tigervnc/files/stable/1.16.0/
 
 choco install -y docker-cli
 
