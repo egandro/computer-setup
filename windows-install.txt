@@ -120,73 +120,86 @@ netsh advfirewall firewall add rule name="ICMP Allow incoming V6 echo request" p
 rem ssh
 rem https://stackoverflow.com/questions/16212816/setting-up-openssh-for-windows-using-public-key-authentication
 ---
-# 1. Install OpenSSH Server
+# 1. Install OpenSSH Server AND Client (Client needed for ssh-agent)
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
 
 # 2. Set Services to start automatically
-# Force the status to ensure the system knows it's not disabled before we try to start it later
 Set-Service -Name ssh-agent -StartupType Automatic
 Set-Service -Name sshd -StartupType Automatic
 
-# 3. Stop service to edit config
+# 3. Stop services to avoid file locks during config
 Stop-Service sshd -ErrorAction SilentlyContinue
+Stop-Service ssh-agent -ErrorAction SilentlyContinue
 
-# 4. Define Config Path
+# 4. Configure sshd_config
 $ConfigPath = "$Env:PROGRAMDATA\ssh\sshd_config"
+$BackupPath = "$ConfigPath.bak"
 
-# 5. Backup
-if (-not (Test-Path "$ConfigPath.bak")) {
-    Copy-Item $ConfigPath "$ConfigPath.bak"
-}
+# Backup if not exists
+if (-not (Test-Path $BackupPath)) { Copy-Item $ConfigPath $BackupPath }
 
-# 6. Apply Configuration Changes
 $Content = Get-Content $ConfigPath
 
-# FIX: Regex needs to be robust. 
-# We comment out the Match block AND the line inside it so it doesn't become a global override.
+# DISABLE ADMIN TRAP: Comment out the default Admin override block
 $Content = $Content -replace 'Match Group administrators', '#Match Group administrators'
 $Content = $Content -replace 'AuthorizedKeysFile __PROGRAMDATA__', '#AuthorizedKeysFile __PROGRAMDATA__'
 
-# Save
-$Content | Set-Content $ConfigPath
-
-# 7. Append your settings
+# DEFINE SETTINGS
 $Settings = @(
     "AuthorizedKeysFile .ssh/authorized_keys",
     "PasswordAuthentication no",
     "PubkeyAuthentication yes"
 )
 
-foreach ($Line in $Settings) {
-    # Check if line exists (simple string match is safer here than regex for full lines)
-    if (-not ($Content -match [Regex]::Escape($Line))) {
-        Add-Content $ConfigPath $Line
-    }
+# Clean up old settings to prevent duplicates
+$Content = $Content | Where-Object { 
+    $_ -notmatch "PasswordAuthentication" -and 
+    $_ -notmatch "PubkeyAuthentication" -and 
+    $_ -notmatch "AuthorizedKeysFile" 
 }
 
-# 8. Set Default Shell to PowerShell
-New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+# Add new settings
+$Content += $Settings
 
-# 9. Verify Firewall Rule 
-New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22 -Force -ErrorAction SilentlyContinue
+# Save with UTF8 (Encoding matches what Windows OpenSSH expects)
+$Content | Set-Content $ConfigPath -Encoding UTF8
 
-# 10. SSHD ignores keys if permissions are wrong.
-$UserSSH = "$env:USERPROFILE\.ssh"
-$KeyFile = "$UserSSH\authorized_keys"
+# 5. Set Default Shell (PowerShell) and Firewall
+New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force | Out-Null
+New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22 -Force -ErrorAction SilentlyContinue | Out-Null
 
-if (Test-Path $UserSSH) {
-    # Remove inheritance, Grant System + Current User (Admin/User) Full Access
-    # /inheritance:r removes inherited perms.
-    # /grant :F gives Full Control.
-    icacls $UserSSH /inheritance:r /grant "SYSTEM:F" /grant "$($env:USERNAME):F"
-    if (Test-Path $KeyFile) {
-        icacls $KeyFile /inheritance:r /grant "SYSTEM:F" /grant "$($env:USERNAME):F"
-    }
+# 6. USER PERMISSIONS & KEYS (The Critical Fix)
+$TargetUser = $env:USERNAME
+$SSHDir     = "$env:USERPROFILE\.ssh"
+$PubFile    = "$SSHDir\id_ed25519.pub"
+$AuthFile   = "$SSHDir\authorized_keys"
+
+# Ensure Directory Exists
+if (-not (Test-Path $SSHDir)) { New-Item -ItemType Directory -Path $SSHDir -Force | Out-Null }
+
+# Ensure authorized_keys exists with correct content and encoding (ASCII)
+if (Test-Path $PubFile) {
+    $KeyContent = Get-Content $PubFile -Raw
+    $KeyContent | Out-File -FilePath $AuthFile -Encoding ascii -Force
 }
 
-# 11. Start Services
-# Start ssh-agent explicitly now that config is done
+# --- PERMISSIONS: STEP-BY-STEP ---
+# A. Take ownership to Administrator group temporarily to break any OS locks
+takeown /F $SSHDir /R /D Y | Out-Null
+
+# B. Explicitly Set Owner to the ACTUAL USER (Fixes "Admin owns it" issue)
+icacls $SSHDir /T /setowner "$TargetUser" | Out-Null
+
+# C. Reset ACLs to clean slate
+icacls $SSHDir /T /reset | Out-Null
+
+# D. Disable Inheritance and Grant ONLY System + User (Fixes "Too Open" issue)
+# /inheritance:r = Remove inherited permissions
+# /grant = Give specific access
+icacls $SSHDir /T /inheritance:r /grant "SYSTEM:F" /grant "$($TargetUser):F" | Out-Null
+
+# 7. Start Services
 Start-Service ssh-agent
 Start-Service sshd
 ---
