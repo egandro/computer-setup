@@ -1,25 +1,20 @@
 # computer-setup
 
-## Debian
+## bootstrap
 
-### bootstrap
-
-**usage**
+**Debian**
 
 ```bash
 apt update && apt install wget -y
 wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap.sh | bash
 ```
-
-### bootstrap termux
-
-**usage**
+**Termux**
 
 ```bash
 curl -sL https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap-termux.sh | bash
 ```
 
-### Windows
+**Windows**
 
 **Chocolaty setup**
 
@@ -37,8 +32,3 @@ set VS2019_ENT_SERIAL=123123123123123
 windows-install.cmd
 ```
 
-### Android Termux
-
-```bash
-curl -o android-termux.sh https://raw.githubusercontent.com/egandro/computer-setup/main/android-termux.sh && chmod 755 android-termux.sh && ./android-termux.sh
-```
