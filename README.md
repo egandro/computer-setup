@@ -1,20 +1,18 @@
 # computer-setup
 
-## bootstrap
-
-**Debian**
+## Debian
 
 ```bash
 apt update && apt install wget -y
 wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap.sh | bash
 ```
-**Termux**
+## Termux
 
 ```bash
 curl -sL https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap-termux.sh | bash
 ```
 
-**Windows**
+## Windows
 
 **Chocolaty setup**
 
