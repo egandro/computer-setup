@@ -11,6 +11,14 @@ apt update && apt install wget -y
 wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap.sh | bash
 ```
 
+### bootstrap termux
+
+**usage**
+
+```bash
+curl -sL https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap-termux.sh | bash
+```
+
 ### Windows
 
 **Chocolaty setup**
