@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+# testing in docker run --rm -it -v "$(pwd):/data/data/com.termux/files/home/work" termux/termux-docker
+
 set -euo pipefail
 
 apt update -y
