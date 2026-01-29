@@ -4,12 +4,12 @@
 
 ```bash
 apt update && apt install wget -y
-wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap.sh | bash
+wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/refs/heads/main/bootstrap.sh | bash
 ```
 ## Termux
 
 ```bash
-curl -sL https://raw.githubusercontent.com/egandro/computer-setup/main/bootstrap-termux.sh | bash
+curl -sL https://raw.githubusercontent.com/egandro/computer-setup/refs/heads/main/bootstrap-termux.sh | bash
 ```
 
 ## Windows
