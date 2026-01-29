@@ -9,7 +9,7 @@ wget -qO- https://raw.githubusercontent.com/egandro/computer-setup/refs/heads/ma
 ## Termux
 
 ```bash
-curl -sL https://raw.githubusercontent.com/egandro/computer-setup/refs/heads/main/bootstrap-termux.sh | bash
+curl -4 -sL https://raw.githubusercontent.com/egandro/computer-setup/refs/heads/main/bootstrap-termux.sh | bash
 ```
 
 ## Windows
