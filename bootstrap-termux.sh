@@ -23,6 +23,7 @@ apt install -y dnsutils
 apt install -y jq
 apt install -y ncdu
 apt install -y make
+apt install -y udocker
 
 #apt install -y nodejs
 #apt install -y golang
