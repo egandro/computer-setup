@@ -1,11 +1,36 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-#trap "rm -f debian-playbook.yml" EXIT
+apt update -y
+apt upgrade -y
+#termux-setup-storage
+apt install -y which
+apt install -y file
+apt install -y vim
+echo "set mouse=r" >> $HOME/.vimrc
+apt install -y tmux
+echo "set -g mouse off" >> $HOME/.tmux.conf
+apt install -y mc
+apt install -y git
+apt install -y wget
+apt install -y man
+apt install -y openssh
+apt install -y termux-auth
+apt install -y ffmpeg
+apt install -y yt-dlp
+apt install -y iproute2
+apt install -y dnsutils
+apt install -y jq
+apt install -y ncdu
+apt install -y make
 
-pkg update -y
-pkg upgrade -y
+#apt install -y nodejs
+#apt install -y golang
+#apt install -y clang
+#apt install -y python
 
-#apt update -y && apt install -y ansible curl sudo
-#curl -fsSL https://raw.githubusercontent.com/egandro/computer-setup/main/debian-playbook.yml -o debian-playbook.yml
-#ansible-playbook debian-playbook.yml
+# additional repos
+# https://github.com/termux-user-repository/tur
+#apt install -y tur-repo
+
+apt autoremove -y
