@@ -147,10 +147,13 @@ if (-not (Test-Path $SSHDir)) { New-Item -ItemType Directory -Path $SSHDir -Forc
 # Remove inheritance so 'Users' group is gone, allow only SYSTEM and YOU
 icacls $SSHDir /inheritance:r /grant "SYSTEM:F" /grant "$($env:USERNAME):F"
 
-# 6. Start Services
+# 6. SET DEFAULT SHELL TO POWERSHELL
+New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+
+# 7. Start Services and set to Automatic
 Set-Service -Name ssh-agent -StartupType Automatic
-Set-Service -Name sshd -StartupType Automatic
 Start-Service ssh-agent
+Set-Service -Name sshd -StartupType Automatic
 Start-Service sshd
 ---
 # ssh dir fix
