@@ -155,7 +155,6 @@
           - tmux
           - unzip
           - vim
-          - xsel
           - zip
           - zoxide
         state: present
