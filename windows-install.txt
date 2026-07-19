@@ -18,6 +18,8 @@ choco install -y git.install --force --params "'/GitAndUnixToolsOnPath'"
 
 rem choco install -y svn
 
+rem choco install -y ChocolateyGUI
+
 choco install -y wget
 
 choco install -y curl
